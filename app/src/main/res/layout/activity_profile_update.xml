@@ -4,33 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".UpdateProfile">
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorHealthe"
+        android:elevation="4dp"
+        app:titleTextColor="@color/colorWhite"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+        tools:targetApi="lollipop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_profile_selector"
         android:paddingBottom="10dp">
-
-        <RelativeLayout
-            android:id="@+id/layout_exit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
-
-            <Button
-                android:id="@+id/btn_exit_update"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/close_icon_update" />
-
-        </RelativeLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_photo"
@@ -44,8 +34,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -268,14 +257,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                android:layout_marginBottom="70dp"
                 android:textSize="28sp"
                 android:fontFamily="@font/quicksand_medium"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/bg_button_login"
                 android:text="@string/submit"/>
+
         </LinearLayout>
 
     </ScrollView>
+
 
 
 </LinearLayout>

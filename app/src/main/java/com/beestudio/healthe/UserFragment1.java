@@ -30,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,8 +41,9 @@ import static android.app.Activity.RESULT_OK;
 public class UserFragment1 extends Fragment {
 
     private Button btnSubmit;
-    private String storagePath = "profile_image/";
-    private String databasePath = "";
+    String storagePath = "profile_image/";
+    int imageRequestCode = 7;
+    Boolean processSubmit = false;
 
     Button chooseButton;
     EditText namaEditText, noHpEditText;
@@ -49,12 +51,9 @@ public class UserFragment1 extends Fragment {
     Uri filePathUri;
 
     StorageReference storageReference;
-    int imageRequestCode = 7;
     ProgressDialog progressDialog;
     FirebaseUser user;
     FirebaseFirestore db;
-    String imageLink;
-    Boolean processSubmit = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,14 +99,8 @@ public class UserFragment1 extends Fragment {
         if(requestCode == imageRequestCode && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePathUri = data.getData();
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePathUri);
-
-                selectImage.setImageBitmap(bitmap);
-                chooseButton.setText("Gambar Terpilih");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Picasso.get().load(filePathUri).into(selectImage);
+            chooseButton.setText("Gambar Terpilih");
         }
     }
 

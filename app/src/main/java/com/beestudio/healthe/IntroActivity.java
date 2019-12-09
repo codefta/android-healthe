@@ -1,6 +1,7 @@
 package com.beestudio.healthe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.beestudio.healthe.utils.IntroUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class IntroActivity extends AppCompatActivity {
@@ -23,17 +26,21 @@ public class IntroActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnToLogin, btnToRegister;
+
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+        mAuth = FirebaseAuth.getInstance();
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layout_dots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        btnToLogin = (Button) findViewById(R.id.btn_to_login);
+        btnToRegister = (Button) findViewById(R.id.btn_to_register);
 
         layouts = new int[] {
                 R.layout.intro_one,
@@ -42,30 +49,40 @@ public class IntroActivity extends AppCompatActivity {
                 R.layout.intro_four
         };
 
+        addBottomDots(0);
+
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
+        btnToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchHomeScreen();
+                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        btnToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int current = getItem(+1);
-
-                if(current < layouts.length) {
-                    viewPager.setCurrentItem(current);
-                } else {
-                    launchHomeScreen();
-                }
+                Intent intent = new Intent(IntroActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null) {
+            Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -104,11 +121,6 @@ public class IntroActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-    private void launchHomeScreen() {
-        IntroUtils.saveSharedSetting(IntroActivity.this, LoginActivity.PREF_USER_FIRST_TIME, "false");
-        finish();
-    }
-
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,14 +130,6 @@ public class IntroActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
-
-            if(position == layouts.length -1) {
-                btnNext.setText(getString(R.string.btn_start));
-                btnSkip.setVisibility(View.GONE);
-            } else {
-                btnNext.setText(getString(R.string.btn_next));
-                btnSkip.setVisibility(View.VISIBLE);
-            }
         }
 
         @Override

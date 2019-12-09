@@ -37,12 +37,12 @@ public class RegisterActivity extends AppCompatActivity{
         passwordField = findViewById(R.id.input_password);
         passwordAgainField = findViewById(R.id.input_password_again);
         btnDaftar = findViewById(R.id.btn_daftar);
-        btnExit = findViewById(R.id.btn_exit_daftar);
+        btnExit = findViewById(R.id.btn_exit_intro);
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, IntroActivity.class);
                 startActivity(intent);
             }
         });
@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             userSession = mAuth.getCurrentUser();
                             Toast.makeText(RegisterActivity.this, "Register Berhasil", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, UserActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(RegisterActivity.this, "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();

@@ -9,8 +9,10 @@ import android.os.Bundle;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +21,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -50,9 +56,6 @@ public class ProfileFragment extends Fragment {
     TextView profileNama, profileGender, profileHeight, profileWeight, profileAge;
     Button editProfile;
     CardView logout, pengaturanAccount, infoApp;
-
-    URL imageUrl;
-    Bitmap imageBmp;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -82,11 +85,12 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        setProfileView();
+
+        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
+
 
         logout = view.findViewById(R.id.logout_layout);
         profileFoto = view.findViewById(R.id.profile_photo);
@@ -99,12 +103,10 @@ public class ProfileFragment extends Fragment {
         pengaturanAccount = view.findViewById(R.id.pengaturan_akun);
         infoApp = view.findViewById(R.id.informasi_aplikasi);
 
-        setProfileView();
-
         pengaturanAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountSettingActivity.class);
+                Intent intent = new Intent(getActivity(), ProfileAccountSettingActivity.class);
                 startActivity(intent);
             }
         });
@@ -112,7 +114,15 @@ public class ProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UpdateProfile.class);
+                Intent intent = new Intent(getActivity(), ProfileUpdateActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        infoApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProfileAppInformasiActivity.class);
                 startActivity(intent);
             }
         });
@@ -121,7 +131,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), IntroActivity.class);
                 startActivity(intent);
             }
         });
@@ -129,27 +139,34 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+
     private void setProfileView() {
-        db.collection("users").document(user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
 
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Picasso.get().load(document.get("profile_url").toString()).into(profileFoto);
+        final DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
 
-                                profileNama.setText(document.get("nama").toString());
-                                profileGender.setText(document.get("nama").toString());
-                                profileHeight.setText(document.get("tinggi_badan").toString());
-                                profileWeight.setText(document.get("berat_badan").toString());
-                                profileAge.setText(document.get("usia").toString());
+                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                        ? "Local" : "Server";
 
-                            }
-                        }
-                    }
-                });
+                if (snapshot != null && snapshot.exists()) {
+                    Picasso.get().load(snapshot.get("profile_url").toString()).into(profileFoto);
+
+                    profileNama.setText(snapshot.get("nama").toString());
+                    profileGender.setText(snapshot.get("jenis_kelamin").toString());
+                    profileHeight.setText(snapshot.get("tinggi_badan").toString());
+                    profileWeight.setText(snapshot.get("berat_badan").toString());
+                    profileAge.setText(snapshot.get("usia").toString());
+
+                } else {
+                    Toast.makeText(getActivity(), "Data Kosong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

@@ -12,8 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AccountSettingActivity"></activity>
-        <activity android:name=".UpdateProfile" />
+        <activity android:name=".ProfileAppInformasiActivity"
+            android:label="@string/info_app"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".ProfileUpdateActivity"
+            android:label="Perbaharui Profil"
+            android:parentActivityName=".MainActivity">
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".ProfileAccountSettingActivity"
+            android:label="Pengaturan Akun"
+            android:parentActivityName=".MainActivity">
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
+        </activity>
         <activity android:name=".UserActivity" />
         <activity android:name=".RegisterActivity" />
         <activity

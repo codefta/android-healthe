@@ -29,7 +29,6 @@ public class UserFragment2 extends Fragment {
     RadioGroup gender;
     RadioButton genderSelected;
     Button submit;
-    private String genderVal;
 
     FirebaseUser user;
     FirebaseFirestore db;

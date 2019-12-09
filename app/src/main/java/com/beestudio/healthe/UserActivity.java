@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,8 +63,6 @@ public class UserActivity extends FragmentActivity {
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
 
@@ -71,14 +70,20 @@ public class UserActivity extends FragmentActivity {
                                     userFragment1.setArguments(getIntent().getExtras());
                                     getSupportFragmentManager().beginTransaction()
                                             .add(R.id.fragment_container, userFragment1).commit();
-                                } else if(document.get("tb") == null || document.get("gender") == null || document.get("bb") == null || document.get("usia") == null) {
+                                } else if(document.get("tinggi_badan") == null || document.get("jenis_kelamin") == null || document.get("berat_badan") == null || document.get("usia") == null) {
                                     userFragment2.setArguments(getIntent().getExtras());
                                     getSupportFragmentManager().beginTransaction()
-                                            .add(R.id.fragment_container, userFragment1).commit();
+                                            .add(R.id.fragment_container, userFragment2).commit();
+                                } else {
+                                    Intent intent = new Intent(UserActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                 }
+                            } else {
+                                userFragment1.setArguments(getIntent().getExtras());
+                                getSupportFragmentManager().beginTransaction()
+                                        .add(R.id.fragment_container, userFragment1).commit();
                             }
                         }
-                    }
                 });
     }
 }

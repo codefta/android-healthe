@@ -1,66 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view_pager" />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/layout_dots"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:layout_marginBottom="30dp">
 
-        <View
-
+        <LinearLayout
+            android:id="@+id/layout_dots"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha=".5"
-            android:layout_above="@id/layout_dots"
-            android:background="@color/colorWhite" />
+            android:layout_height="30dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btn_skip"
-            android:layout_width="wrap_content"
+            android:layout_below="@id/layout_dots"
+            android:id="@+id/btn_to_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:background="@null"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
-            android:text="@string/btn_skip"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/colorHealthe"
+            android:fontFamily="@font/quicksand_medium"
             android:padding="8dp"
-            android:textSize="18sp"
-            app:fontFamily="@font/quicksand_medium"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_alignParentStart="true" />
+            android:text="Login"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
 
         <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_to_register"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="8dp"
+            android:layout_below="@id/btn_to_login"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:layout_marginBottom="8dp"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:textSize="18sp"
-            app:fontFamily="@font/quicksand_medium"
-            android:textColor="@color/colorAccent"
-            android:textAllCaps="false"
-            android:text="@string/btn_next"
-            android:layout_alignParentEnd="true" />
+            android:background="@color/colorAsbestos"
+            android:fontFamily="@font/quicksand_medium"
+            android:padding="8dp"
+            android:text="Daftar"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

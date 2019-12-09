@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,8 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
@@ -82,40 +87,40 @@ public class HomeFragment extends Fragment {
         bmiKategori = view.findViewById(R.id.bmi_kategori);
         bmiStatus = view.findViewById(R.id.bmi_status);
 
-        db.collection("users")
-                .document(user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                namaHello.setText(document.get("nama").toString());
-                                int tb = Integer.parseInt(document.get("tinggi_badan").toString());
-                                int bb = Integer.parseInt(document.get("berat_badan").toString());
-                                int umur = Integer.parseInt(document.get("usia").toString());
-                                String gender = document.get("jenis_kelamin").toString();
+        final DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
 
-                                int kaloriResult = hitungBMR(gender, tb, umur, bb);
-                                String bmiKategoriResult = kelompokBMI(bb, tb);
-                                String bmiStatusResult = statusBMI(bb, tb);
+                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                        ? "Local" : "Server";
 
-                                kaloriCount.setText(Integer.toString(kaloriResult));
-                                bmiKategori.setText(bmiKategoriResult);
-                                bmiStatus.setText(bmiStatusResult);
+                if (snapshot != null && snapshot.exists()) {
+                    namaHello.setText(snapshot.get("nama").toString());
+                    int tb = Integer.parseInt(snapshot.get("tinggi_badan").toString());
+                    int bb = Integer.parseInt(snapshot.get("berat_badan").toString());
+                    int umur = Integer.parseInt(snapshot.get("usia").toString());
+                    String gender = snapshot.get("jenis_kelamin").toString();
 
-                            } else {
+                    int kaloriResult = hitungBMR(gender, tb, umur, bb);
+                    String bmiKategoriResult = kelompokBMI(bb, tb);
+                    String bmiStatusResult = statusBMI(bb, tb);
 
-                            }
-                        } else {
-                        }
-                    }
-                });
+                    kaloriCount.setText(Integer.toString(kaloriResult));
+                    bmiKategori.setText(bmiKategoriResult);
+                    bmiStatus.setText(bmiStatusResult);
+                } else {
+                    Toast.makeText(getActivity(), "Data Kosong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
     }
-
 
     public int hitungBMR(String gender, int tb, int umur, int bb) {
 
@@ -127,7 +132,11 @@ public class HomeFragment extends Fragment {
     }
 
     public double hitungBMI(int bb, int tb) {
-        return  bb / (tb / 100);
+        if(bb != 0) {
+            return  bb / Math.pow(2, (tb/100.0));
+        } else {
+            return 0;
+        }
     }
 
     private String kelompokBMI(int bb, int tb) {

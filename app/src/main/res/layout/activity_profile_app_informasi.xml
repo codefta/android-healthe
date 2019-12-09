@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ProfileAppInformasiActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorHealthe"
+        app:titleTextColor="@color/colorWhite"
+        android:elevation="4dp"
+        android:foregroundTint="@color/colorWhite"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+        tools:targetApi="lollipop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Lisensi:"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="MIT \nboleh dikembangkan dan disebarkan secara gratis"
+            android:fontFamily="@font/quicksand_medium"/>
+
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Dibuat oleh:"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text=" Bee Studio"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Informasi Pengembang:"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="- AXEL CHRISTIANT (17523232@students.uii.ac.id) sebagai Manajer Proyek \n- JAVIER FARRAN ATH THAARIQ (17523034@students.uii.ac.id) sebagai Designer \n- MOCH. FATHI SIDDIQI (17523233@students.uii.ac.id) sebagai Programmer \n- M YUSRIL NUGRAHA PUTRA (17523117@students.uii.ac.id) sebagai Content Writer \n- DWIKO NUGROHO DANI (17523115@students.uii.ac.id) sebagai Tester"
+            android:fontFamily="@font/quicksand_medium"/>
+
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Informasi Konten:"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="- Icon / gambar di halaman pengenalan diambil dari vecteezy.com dan freepik.com"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="- Calorie icon di home aplikasi designed by freepik from Flaticon"
+            android:fontFamily="@font/quicksand_medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="- Calorie icon di home aplikasi designed by Darlus Dan from Flaticon"
+            android:fontFamily="@font/quicksand_medium"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -26,8 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout emailLayout;
     TextInputLayout passwordLayout;
 
-    Button buttonLogin;
-    Button buttonRegister;
+    Button buttonLogin, btnExit;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser userLogin;
@@ -41,16 +40,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
 
-//        isUserFirstTime = Boolean.valueOf(IntroUtils.readSharedSetting(MainActivity.this, PREF_USER_FIRST_TIME, "true"));
-//        introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
-        Intent introIntent = new Intent(LoginActivity.this, IntroActivity.class);
-//        if(isUserFirstTime)
-        startActivity(introIntent);
-
         emailField = findViewById(R.id.input_email);
         passwordField = findViewById(R.id.input_password);
-        buttonRegister = findViewById(R.id.button_daftar);
         buttonLogin = findViewById(R.id.button_masuk);
+        btnExit = findViewById(R.id.btn_exit_intro);
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,13 +60,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
