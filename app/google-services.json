@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "287143679371",
+    "firebase_url": "https://health-e-5dbc3.firebaseio.com",
+    "project_id": "health-e-5dbc3",
+    "storage_bucket": "health-e-5dbc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287143679371:android:abec6508d4428dff838b8e",
+        "android_client_info": {
+          "package_name": "com.beestudio.healthe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287143679371-fmlbq45ahl7sqe7rc77pofk59fbu2cnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXjFryU3y6X-7kCN0xsfkdcCALBxLwoQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287143679371-fmlbq45ahl7sqe7rc77pofk59fbu2cnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

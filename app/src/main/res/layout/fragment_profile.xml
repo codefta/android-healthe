@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileFragment"
+    android:background="#f4f4f4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="20dp"
+            android:background="@drawable/bg_profile_selector"
+            android:paddingBottom="10dp">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_profile"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/profile_nama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama saya"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:layout_below="@id/profile_photo"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="25sp" />
+
+
+                <TextView
+                    android:id="@+id/profile_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Keluar"
+                    android:layout_below="@id/profile_nama"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:textColor="@color/colorWhite" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layout_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_gender"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/profile_age"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Age" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/profile_age"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Th"
+                                android:layout_toEndOf="@id/profile_age" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/colorAsbestos" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/profile_height"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Height" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/profile_height"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Cm"
+                                android:layout_toEndOf="@id/profile_height" />
+
+                        </RelativeLayout>
+
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/colorAsbestos" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/profile_weight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Weight" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/profile_weight"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/quicksand_medium"
+                                android:textAlignment="center"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/colorAsbestos"
+                                android:text="Kg"
+                                android:layout_toEndOf="@id/profile_weight" />
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/profile_edit"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Edit Profile"
+                android:textColor="@color/colorWhite"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:layout_below="@id/layout_info"/>
+
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/pengaturan_akun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="Pengaturan akun" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sesuaikan informasi akun anda seperti email dan password"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/informasi_aplikasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="Informasi Aplikasi" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Berisi informasi tentang aplikasi health E"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/logout_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Keluar"
+                        android:textAlignment="center"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:textColor="@color/colorAccent" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

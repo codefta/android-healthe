@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_marginTop="80dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/food" />
+
+        <TextView
+            android:layout_marginTop="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/intro_title2"
+            android:textStyle="bold"
+            app:fontFamily="@font/quicksand_medium"
+            style="@style/TextAppearance.AppCompat.Title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            app:fontFamily="@font/quicksand_medium"
+            android:textSize="20sp"
+            android:text="Dapatkan Rekomendasi makanan berdasarkan kebutuhan kalori tubuh anda"
+            android:textAlignment="center" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
