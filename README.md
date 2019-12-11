@@ -86,7 +86,7 @@ user.updateEmail(email)
 ```
 
 
-###Cara Mengambil data dari EditText, Spinner, dan RadioButton
+### Cara Mengambil data dari EditText, Spinner, dan RadioButton
 
 1. Deklarasikan dulu type data untuk setiap variabel
 ```
