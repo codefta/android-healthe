@@ -84,4 +84,15 @@
     <string name="keluar_aplikasi">Keluar Aplikasi</string>
     <string name="profil_saya">Profil Saya</string>
     <string name="info_app">Informasi Aplikasi</string>
+    <string name="gram">gr</string>
+    <string name="berat_badan_selengkapnya"><u>Selengkapnya</u></string>
+    <string name="zero">0</string>
+
+    <string-array name="bobot_aktifitas">
+        <item>Pilih Aktifitas</item>
+        <item>Tidak Melakukan Aktifitas</item>
+        <item>Melakukan Aktifitas Ringan</item>
+        <item>Melakukan Aktifitas Sedang</item>
+        <item>Melakukan Aktifitas Berat</item>
+    </string-array>
 </resources>

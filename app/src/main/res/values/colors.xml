@@ -8,4 +8,8 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorAsbestos">#7f8c8d</color>
+    <color name="colorYellow">#F6D55C</color>
+    <color name="colorOrange">#FF5733</color>
+    <color name="colorGreen">#3CAEA3</color>
+    <color name="colorBlue">#20639B</color>
 </resources>

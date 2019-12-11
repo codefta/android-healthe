@@ -3,10 +3,8 @@ package com.beestudio.healthe;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +29,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,9 +47,10 @@ public class UserFragment1 extends Fragment {
     Uri filePathUri;
 
     StorageReference storageReference;
-    ProgressDialog progressDialog;
     FirebaseUser user;
     FirebaseFirestore db;
+
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,9 +60,12 @@ public class UserFragment1 extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.loading));
+
         chooseButton = view.findViewById(R.id.btn_pilih_image);
         selectImage = view.findViewById(R.id.show_image);
-        progressDialog = new ProgressDialog(getActivity());
+
         btnSubmit = view.findViewById(R.id.next_datadiri);
         namaEditText = view.findViewById(R.id.input_nama);
         noHpEditText = view.findViewById(R.id.input_nohp);
@@ -117,7 +117,6 @@ public class UserFragment1 extends Fragment {
         }
 
         if(filePathUri != null) {
-            progressDialog.setTitle("Sedang mengupload gambar...");
 
             progressDialog.show();
 
@@ -179,6 +178,7 @@ public class UserFragment1 extends Fragment {
         userAdd.put("usia", 0);
         userAdd.put("tinggi_badan", 0);
         userAdd.put("berat_badan", 0);
+        userAdd.put("aktifitas_harian", "");
 
         db.collection("users").document(user.getUid().toString())
                 .set(userAdd)

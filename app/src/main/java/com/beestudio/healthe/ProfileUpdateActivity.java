@@ -216,7 +216,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            addToDatabase(namaEditText.getText().toString(), noHpEditText.getText().toString(),"", genderSelected.getText().toString(), Integer.parseInt(usia.getText().toString()), Integer.parseInt(tb.getText().toString()), Integer.parseInt(bb.getText().toString()));
+            addToDatabase(namaEditText.getText().toString(), noHpEditText.getText().toString(),null, genderSelected.getText().toString(), Integer.parseInt(usia.getText().toString()), Integer.parseInt(tb.getText().toString()), Integer.parseInt(bb.getText().toString()));
         }
     }
 

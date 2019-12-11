@@ -39,6 +39,9 @@ public class RegisterActivity extends AppCompatActivity{
         btnDaftar = findViewById(R.id.btn_daftar);
         btnExit = findViewById(R.id.btn_exit_intro);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.loading));
+
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity{
             return;
         }
 
-        showProgressDialog();
+        progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -77,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity{
                             userSession = null;
                         }
 
-                        hideProgressDialog();
+                        progressDialog.hide();
                     }
                 });
 
@@ -118,14 +121,6 @@ public class RegisterActivity extends AppCompatActivity{
         }
 
         return  valid;
-    }
-
-    private void showProgressDialog() {
-        if(progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.loading));
-            progressDialog.setIndeterminate(true);
-        }
     }
 
     private void hideProgressDialog() {

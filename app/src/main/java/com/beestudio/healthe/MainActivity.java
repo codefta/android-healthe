@@ -26,12 +26,12 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        checkDataDiri();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        checkDataDiri();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -41,8 +41,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onStart() {
-        checkDataDiri();
         super.onStart();
+        checkDataDiri();
     }
 
     public void openFragment(Fragment fragment) {
@@ -88,6 +88,14 @@ public class MainActivity extends FragmentActivity {
                             if (!document.exists()) {
                                 Intent intent = new Intent(MainActivity.this, UserActivity.class);
                                 startActivity(intent);
+                            } else {
+                                if(document.get("nama") == null || document.get("no_hp") == null || document.get("profile_url") == null ) {
+                                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                                    startActivity(intent);
+                                } else if(document.get("tinggi_badan") == null || document.get("jenis_kelamin") == null || document.get("berat_badan") == null || document.get("usia") == null) {
+                                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                                    startActivity(intent);
+                                }
                             }
                         }
                     }

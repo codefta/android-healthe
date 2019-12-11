@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button buttonLogin, btnExit;
     private FirebaseAuth mAuth;
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
     private FirebaseUser userLogin;
 
 
@@ -39,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.loading));
 
         emailField = findViewById(R.id.input_email);
         passwordField = findViewById(R.id.input_password);
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, UserActivity.class);
             startActivity(intent);
         }
     }
@@ -79,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        showProgressDialog();
+        progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email,pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -87,15 +89,16 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             userLogin = mAuth.getCurrentUser();
+                            progressDialog.hide();
                             Intent intent = new Intent(LoginActivity.this, UserActivity.class);
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, "Login Activity", Toast.LENGTH_SHORT).show();
                         } else {
                             userLogin = null;
+                            progressDialog.hide();
                             Toast.makeText(LoginActivity.this, "Login gagal", Toast.LENGTH_SHORT).show();
                         }
 
-                        hideProgressDialog();
                     }
                 });
     }
@@ -120,19 +123,5 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return  valid;
-    }
-
-    private void showProgressDialog() {
-        if(progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.loading));
-            progressDialog.setIndeterminate(true);
-        }
-    }
-
-    private void hideProgressDialog() {
-        if(progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 }

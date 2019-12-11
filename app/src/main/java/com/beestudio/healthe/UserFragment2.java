@@ -1,5 +1,6 @@
 package com.beestudio.healthe;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +34,8 @@ public class UserFragment2 extends Fragment {
     FirebaseUser user;
     FirebaseFirestore db;
 
+    ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.user_two, container, false);
@@ -44,6 +47,9 @@ public class UserFragment2 extends Fragment {
         bb = view.findViewById(R.id.input_bb);
         submit = view.findViewById(R.id.submit_datadiri);
         gender = view.findViewById(R.id.gender);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.loading));
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +72,13 @@ public class UserFragment2 extends Fragment {
         userUpdate.put("tinggi_badan", Integer.parseInt(tb.getText().toString()));
         userUpdate.put("berat_badan", Integer.parseInt(bb.getText().toString()));
 
+        progressDialog.show();
         db.collection("users").document(user.getUid().toString())
                 .update(userUpdate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        progressDialog.hide();
                         Toast.makeText(getActivity(), "Anda berhasil melengkapi data diri", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -80,10 +88,12 @@ public class UserFragment2 extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressDialog.hide();
                         Toast.makeText(getActivity(), "Anda gagal melengkapi data diri", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+        progressDialog.hide();
         getActivity().finish();
     }
 

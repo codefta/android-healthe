@@ -74,9 +74,6 @@ public class UserActivity extends FragmentActivity {
                                     userFragment2.setArguments(getIntent().getExtras());
                                     getSupportFragmentManager().beginTransaction()
                                             .add(R.id.fragment_container, userFragment2).commit();
-                                } else {
-                                    Intent intent = new Intent(UserActivity.this, MainActivity.class);
-                                    startActivity(intent);
                                 }
                             } else {
                                 userFragment1.setArguments(getIntent().getExtras());
