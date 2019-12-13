@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,6 +38,7 @@ public class ProfileAccountSettingActivity extends AppCompatActivity {
 
     FirebaseUser user;
     FirebaseFirestore db;
+    String currentEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,28 @@ public class ProfileAccountSettingActivity extends AppCompatActivity {
         email = findViewById(R.id.input_email);
         password = findViewById(R.id.input_password);
         btnSubmit = findViewById(R.id.btn_update_setting);
+
+        if(TextUtils.equals(email.getText().toString(), currentEmail)) {
+            btnSubmit.setBackground(getResources().getDrawable(R.drawable.bg_button_signup));
+            btnSubmit.setEnabled(false);
+        } else {
+            btnSubmit.setBackground(getResources().getDrawable(R.drawable.bg_button_login));
+            btnSubmit.setEnabled(true);
+        }
+
+
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(TextUtils.equals(email.getText().toString(), currentEmail)) {
+                    btnSubmit.setBackground(getResources().getDrawable(R.drawable.bg_button_signup));
+                    btnSubmit.setEnabled(false);
+                } else {
+                    btnSubmit.setBackground(getResources().getDrawable(R.drawable.bg_button_login));
+                    btnSubmit.setEnabled(true);
+                }
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,67 +98,44 @@ public class ProfileAccountSettingActivity extends AppCompatActivity {
     }
 
     private void updateAkun(String email, String password) {
-        if(email != "") {
+        if(!TextUtils.isEmpty(email)) {
             user.updateEmail(email)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                updateAkunDb(email);
                                 Toast.makeText(ProfileAccountSettingActivity.this, "Email Telah diubah", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(ProfileAccountSettingActivity.this, "Email gagal diubah", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
+
         }
 
-        if(password != "") {
+        if(!TextUtils.isEmpty(password)) {
             user.updatePassword(password)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ProfileAccountSettingActivity.this, "Password Telah diubah", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(ProfileAccountSettingActivity.this, "Password gagal diubah", Toast.LENGTH_LONG).show();
                             }
+
                         }
                     });
         }
 
     }
 
-    private void updateAkunDb(String email) {
-
-        Map<String, Object> userUpdate = new HashMap<>();
-        userUpdate.put("email", email);
-
-        db.collection("users").document(user.getUid().toString())
-                .update(userUpdate);
-
-
-    }
-
-
     private void setSettingProfilView() {
-
-        final DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
-
-                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
-                        ? "Local" : "Server";
-
-                if (snapshot != null && snapshot.exists()) {
-
-                    email.setText(snapshot.get("email").toString());
-
-                } else {
-                    Toast.makeText(ProfileAccountSettingActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
-                }
+        if(user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                email.setText(profile.getEmail());
+                currentEmail = profile.getEmail();
             }
-        });
+        }
     }
 }

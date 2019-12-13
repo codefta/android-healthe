@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<ScrollView-->
-<!--    -->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:attr="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="150dp"
     android:background="@drawable/home_bg_selector">
 
         <LinearLayout
@@ -63,21 +55,87 @@
                     android:textSize="20sp"
                     android:text="Bagaimana Aktifitasmu hari ini ?" />
 
-                <Spinner
-                    android:id="@+id/aktifitas_spinner"
+                    <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:background="@color/colorWhite">
+
+                        <TextView
+                            android:id="@+id/aktivitas_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:layout_alignParentLeft="true"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:text="Tidak Ada Aktifitas dipilih" />
+
+                        <TextView
+                            android:id="@+id/aktivitas_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="Ubah"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:textColor="@color/colorHealthe"
+                            android:layout_marginRight="8dp"
+                            android:layout_centerVertical="true" />
+
+
+                    </RelativeLayout>
+
+
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:textSize="20sp"
+                    android:text="Bagaimana Kondisimu Hari ini ?" />
+                <RelativeLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:background="@color/colorWhite">
+                <TextView
+                    android:id="@+id/stres_tv"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/bobot_aktifitas"
-                    android:layout_marginTop="12dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.Light"
-                    android:spinnerMode="dropdown"/>
+                    android:textSize="18sp"
+                    android:layout_alignParentLeft="true"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="Tidak Ada Kondisi dipilih" />
+                    <TextView
+                        android:id="@+id/stres_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Ubah"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:textColor="@color/colorHealthe"
+                        android:layout_marginRight="8dp"
+                        android:layout_centerVertical="true" />
 
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/colorWhite" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="15dp"
                     android:orientation="vertical">
 
@@ -99,7 +157,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/quicksand_medium"
                                 android:padding="8dp"
-                                android:text="Kebutuhan Kalori Harian Anda"
+                                android:text="Kebutuhan Gizi Harian Anda"
                                 android:textAlignment="center"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -177,15 +235,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1">
-
-                                    <!--                            <ImageView-->
-                                    <!--                                android:id="@+id/karbohidrat_icon"-->
-                                    <!--                                android:layout_width="36dp"-->
-                                    <!--                                android:layout_height="36dp"-->
-                                    <!--                                android:layout_marginRight="15dp"-->
-                                    <!--                                android:layout_centerHorizontal="true"-->
-                                    <!--                                android:layout_marginLeft="16dp"-->
-                                    <!--                                android:src="@drawable/carbohidrate_icon" />-->
                                     <RelativeLayout
                                         android:id="@+id/karbohidrat_tv"
                                         android:layout_width="match_parent"
@@ -237,14 +286,6 @@
                                     android:layout_marginRight="8dp"
                                     android:layout_weight="1">
 
-                                    <!--                            <ImageView-->
-                                    <!--                                android:id="@+id/protein_icon"-->
-                                    <!--                                android:layout_width="36dp"-->
-                                    <!--                                android:layout_height="36dp"-->
-                                    <!--                                android:layout_marginRight="15dp"-->
-                                    <!--                                android:layout_centerHorizontal="true"-->
-                                    <!--                                android:layout_marginLeft="16dp"-->
-                                    <!--                                android:src="@drawable/protein_icon" />-->
 
                                     <RelativeLayout
                                         android:id="@+id/protein_tv"
@@ -296,15 +337,6 @@
                                     android:layout_marginRight="8dp"
                                     android:layout_weight="1">
 
-                                    <!--                            <ImageView-->
-                                    <!--                                android:id="@+id/lemak_icon"-->
-                                    <!--                                android:layout_width="36dp"-->
-                                    <!--                                android:layout_height="36dp"-->
-                                    <!--                                android:layout_marginRight="15dp"-->
-                                    <!--                                android:layout_centerHorizontal="true"-->
-                                    <!--                                android:layout_marginLeft="16dp"-->
-                                    <!--                                android:src="@drawable/fat_icon" />-->
-
                                     <RelativeLayout
                                         android:id="@+id/lemak_tv"
                                         android:layout_width="match_parent"
@@ -351,73 +383,73 @@
                 </LinearLayout>
 
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="15dp">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="20dp"-->
+<!--                        android:orientation="vertical">-->
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_medium"
-                            android:padding="8dp"
-                            android:text="Status Berat Badan Anda"
-                            android:textAlignment="center"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/quicksand_medium"-->
+<!--                            android:padding="8dp"-->
+<!--                            android:text="Status Gizi Anda"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold" />-->
 
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@color/colorAsbestos" />
+<!--                        <View-->
+<!--                            android:layout_width="fill_parent"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:layout_marginLeft="16dp"-->
+<!--                            android:layout_marginRight="16dp"-->
+<!--                            android:layout_marginBottom="10dp"-->
+<!--                            android:background="@color/colorAsbestos" />-->
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content">-->
 
-                            <ImageView
-                                android:id="@+id/bmi_icon"
-                                android:layout_width="80dp"
-                                android:layout_height="64dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="15dp"
-                                android:src="@drawable/bmi_icon" />
+<!--                            <ImageView-->
+<!--                                android:id="@+id/bmi_icon"-->
+<!--                                android:layout_width="80dp"-->
+<!--                                android:layout_height="64dp"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:layout_marginLeft="16dp"-->
+<!--                                android:layout_marginRight="15dp"-->
+<!--                                android:src="@drawable/bmi_icon" />-->
 
-                            <TextView
-                                android:id="@+id/bmi_kategori"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@id/bmi_icon"
-                                android:layout_toRightOf="@id/bmi_icon"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="Kategori Berat Badan"
-                                android:textStyle="bold"
-                                android:textAlignment="center"
-                                android:textSize="20sp" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/bmi_kategori"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_toEndOf="@id/bmi_icon"-->
+<!--                                android:layout_toRightOf="@id/bmi_icon"-->
+<!--                                android:fontFamily="@font/quicksand_medium"-->
+<!--                                android:text="Kategori Berat Badan"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textAlignment="center"-->
+<!--                                android:textSize="20sp" />-->
 
-                            <TextView
-                                android:id="@+id/bmi_status"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/bmi_kategori"
-                                android:layout_toRightOf="@id/bmi_icon"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="Status Berat Badan"
-                                android:textSize="15sp" />
-                        </RelativeLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/bmi_status"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_below="@id/bmi_kategori"-->
+<!--                                android:layout_toRightOf="@id/bmi_icon"-->
+<!--                                android:fontFamily="@font/quicksand_medium"-->
+<!--                                android:text="Status Berat Badan"-->
+<!--                                android:textSize="15sp" />-->
+<!--                        </RelativeLayout>-->
 
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+<!--                    </LinearLayout>-->
+<!--                </androidx.cardview.widget.CardView>-->
 
 <!--                <androidx.cardview.widget.CardView-->
 <!--                    android:layout_width="match_parent"-->

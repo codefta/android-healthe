@@ -22,14 +22,10 @@
         <activity android:name=".ProfileUpdateActivity"
             android:label="Perbaharui Profil"
             android:parentActivityName=".MainActivity">
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity" />
         </activity>
         <activity android:name=".ProfileAccountSettingActivity"
             android:label="Pengaturan Akun"
             android:parentActivityName=".MainActivity">
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity" />
         </activity>
         <activity android:name=".UserActivity" />
         <activity android:name=".RegisterActivity" />

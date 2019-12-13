@@ -1,6 +1,7 @@
 package com.beestudio.healthe;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -9,14 +10,19 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends FragmentActivity {
 
@@ -28,13 +34,11 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        checkDataDiri();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        checkDataDiri();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(HomeFragment.newInstance("", ""));
     }
@@ -42,7 +46,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        checkDataDiri();
+//        checkDataDiri();
     }
 
     public void openFragment(Fragment fragment) {
@@ -65,9 +69,9 @@ public class MainActivity extends FragmentActivity {
                 case R.id.nav_kalkulator:
                     openFragment(KalkulatorFragment.newInstance("",""));
                     return true;
-                case R.id.nav_reminder:
-                    openFragment(ReminderFragment.newInstance("",""));
-                    return true;
+//                case R.id.nav_reminder:
+//                    openFragment(ReminderFragment.newInstance("",""));
+//                    return true;
                 case R.id.nav_profile:
                     openFragment(ProfileFragment.newInstance("",""));
                     return true;
@@ -77,28 +81,29 @@ public class MainActivity extends FragmentActivity {
     };
 
     private void checkDataDiri() {
-        db.collection("users").document(user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
 
-                            DocumentSnapshot document = task.getResult();
-                            if (!document.exists()) {
-                                Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                                startActivity(intent);
-                            } else {
-                                if(document.get("nama") == null || document.get("no_hp") == null || document.get("profile_url") == null ) {
-                                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                                    startActivity(intent);
-                                } else if(document.get("tinggi_badan") == null || document.get("jenis_kelamin") == null || document.get("berat_badan") == null || document.get("usia") == null) {
-                                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                                    startActivity(intent);
-                                }
-                            }
-                        }
-                    }
-                });
+        final DocumentReference docRef = db.collection("users").document(user.getUid());
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+
+                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                        ? "Local" : "Server";
+
+                if (snapshot == null && !snapshot.exists()) {
+                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 }

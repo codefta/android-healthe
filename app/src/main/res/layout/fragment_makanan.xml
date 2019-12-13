@@ -22,13 +22,24 @@
             android:paddingBottom="15dp">
 
             <TextView
+                android:id="@+id/nama_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:text="Rekomendasi Makanan"
+                android:text="Android"
                 android:textColor="@color/colorWhite"
-                android:textSize="25sp"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/quicksand_medium"
+                android:layout_height="wrap_content"
+                android:text="Yuk lihat rekomendasi makanan harianmu!"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +124,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:padding="8dp">
 
@@ -269,7 +280,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:padding="8dp">
 
@@ -348,6 +359,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
+            android:scrollbars="none"
             android:layout_marginBottom="8dp">
 
             <LinearLayout
@@ -356,6 +368,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/btn_all_makanan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
@@ -389,176 +402,12 @@
 
         </HorizontalScrollView>
 
-
-        <ScrollView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:id="@+id/container_makanan">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:orientation="vertical">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_margin="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/makanan_image"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/protein_icon"/>
-
-                        <TextView
-                            android:layout_marginBottom="8dp"
-                            android:id="@+id/makanan_title"
-                            android:layout_toRightOf="@id/makanan_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/quicksand_medium"
-                            android:textSize="18sp"
-                            android:text="Makanan Title" />
-
-                        <TextView
-                            android:layout_marginBottom="8dp"
-                            android:id="@+id/makanan_kategori"
-                            android:layout_below="@id/makanan_title"
-                            android:layout_toRightOf="@id/makanan_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_medium"
-                            android:textSize="14sp"
-                            android:text="Makanan kategori" />
-
-                        <Button
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@id/makanan_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:textAllCaps="false"
-                            android:background="@color/colorGreen"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:padding="0dp"
-                            android:text="Hitung" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_toRightOf="@id/makanan_image"
-                            android:layout_below="@id/makanan_kategori">
-                            <LinearLayout
-                                android:id="@+id/kalori_info"
-                                android:layout_weight="1"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/zero"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Kalori"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorOrange"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/protein_info"
-                                android:layout_weight="1"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/zero"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Protein"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorBlue"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/karbohidrat_info"
-                                android:layout_weight="1"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/zero"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Karbohidrat"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorGreen"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/lemak_info"
-                                android:layout_weight="1"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/zero"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Lemak"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textColor="@color/colorYellow"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-        </ScrollView>
+        </FrameLayout>
 
     </LinearLayout>
 

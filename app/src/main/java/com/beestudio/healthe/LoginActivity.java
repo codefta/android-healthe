@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
 
         mAuth.signInWithEmailAndPassword(email,pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
