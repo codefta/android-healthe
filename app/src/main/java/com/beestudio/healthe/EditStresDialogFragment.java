@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,6 +59,8 @@ public class EditStresDialogFragment extends DialogFragment {
     double bStres;
     String nStres;
     String kStres;
+
+    TextView stresKeteranganView;
 
     public EditStresDialogFragment() {
         // Required empty public constructor
@@ -133,6 +136,8 @@ public class EditStresDialogFragment extends DialogFragment {
                                     nStres = jenisStresSpinnerArray.get(position);
                                     kStres = keteranganStres.get(position);
                                     bStres = bobotStres.get(position);
+                                    stresKeteranganView.setText(kStres);
+                                    stresKeteranganView.setVisibility(View.VISIBLE);
 
                                     simpanStres.setOnClickListener(new View.OnClickListener() {
                                         @Override

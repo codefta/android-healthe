@@ -12,14 +12,6 @@
         android:padding="8dp"
         android:orientation="vertical">
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Silakan Pilih Aktifitas Harian anda!"-->
-<!--            android:textAlignment="center"-->
-<!--            android:fontFamily="@font/quicksand_medium"-->
-<!--            android:textSize="24sp" />-->
-
         <Spinner
             android:id="@+id/aktifitas_spinner"
             android:background="@color/colorWhite"
@@ -29,8 +21,30 @@
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             android:spinnerMode="dropdown"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAsbestos"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/aktifitas_keterangan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keterangan Aktifitas"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:fontFamily="@font/quicksand_medium"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp" />
+
         <Button
             android:layout_width="match_parent"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorGreen"
             android:layout_height="wrap_content"
             android:id="@+id/btn_simpan_aktifitas"
             android:text="Simpan" />

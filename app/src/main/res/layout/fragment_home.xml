@@ -72,6 +72,21 @@
                             android:text="Tidak Ada Aktifitas dipilih" />
 
                         <TextView
+                            android:id="@+id/aktivitas_keterangan_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:layout_marginTop="8dp"
+                            android:textStyle="italic"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@id/aktivitas_tv"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:layout_toLeftOf="@id/aktivitas_change"
+                            android:layout_marginRight="12dp"
+                            android:text="Tidak Ada Keterangan Aktifitas" />
+
+
+                        <TextView
                             android:id="@+id/aktivitas_change"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -81,7 +96,6 @@
                             android:textColor="@color/colorHealthe"
                             android:layout_marginRight="8dp"
                             android:layout_centerVertical="true" />
-
 
                     </RelativeLayout>
 
@@ -110,6 +124,19 @@
                     android:layout_alignParentLeft="true"
                     android:fontFamily="@font/quicksand_medium"
                     android:text="Tidak Ada Kondisi dipilih" />
+                    <TextView
+                        android:id="@+id/stres_keterangan_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@id/stres_change"
+                        android:layout_below="@id/stres_tv"
+                        android:layout_marginRight="12dp"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:text="Tidak Ada Keterangan Kondisi" />
                     <TextView
                         android:id="@+id/stres_change"
                         android:layout_width="wrap_content"

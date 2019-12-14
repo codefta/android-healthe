@@ -177,7 +177,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 
                         if (snapshot != null && snapshot.exists()) {
                             Glide.with(ProfileUpdateActivity.this).load(snapshot.get("profilUrl").toString()).centerCrop().into(profileFoto);
-                            if(snapshot.get("jenisKelamin").toString() == "Laki-laki") {
+                            if(TextUtils.equals(snapshot.get("jenisKelamin").toString(),"Laki-laki")) {
                                 gender.check(R.id.gender_pria);
                             } else {
                                 gender.check(R.id.gender_wanita);

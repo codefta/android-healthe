@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView namaHello, kaloriCount, proteinCount, karbohidratCount, lemakCount, bmiKategori, bmiStatus, stresStatus, aktivitasStatus, stresChange, aktifitasChange;
+    TextView namaHello, kaloriCount, proteinCount, karbohidratCount, lemakCount, bmiKategori, bmiStatus, stresStatus, aktivitasStatus, stresChange, aktifitasChange, aktivitasKeterangan, stresKeterangan;
     FirebaseUser user;
     FirebaseFirestore db;
 
@@ -90,6 +90,8 @@ public class HomeFragment extends Fragment {
         aktifitasChange = view.findViewById(R.id.aktivitas_change);
         stresChange = view.findViewById(R.id.stres_change);
         tambahData = view.findViewById(R.id.tambah_data_makanan);
+        aktivitasKeterangan = view.findViewById(R.id.aktivitas_keterangan_tv);
+        stresKeterangan = view.findViewById(R.id.stres_keterangan_tv);
 
         aktifitasChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +173,9 @@ public class HomeFragment extends Fragment {
 
                     namaHello.setText(snapshot.get("nama").toString());
                     aktivitasStatus.setText(aktifitas.get("tingkatAktifitas").toString());
+                    aktivitasKeterangan.setText(aktifitas.get("keterangan").toString());
                     stresStatus.setText(stres.get("tingkatStres").toString());
+                    stresKeterangan.setText(stres.get("keterangan").toString());
 
                     int tb = Integer.parseInt(snapshot.get("tinggiBadan").toString());
                     int bb = Integer.parseInt(snapshot.get("beratBadan").toString());

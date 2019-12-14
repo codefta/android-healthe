@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,20 +64,14 @@ public class EditAktifitasDialogFragment extends DialogFragment {
     Double bAktifitas;
     String kAktifitas;
 
+    TextView ketAktivitasView;
+
 
     public EditAktifitasDialogFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditAktifitasDialogFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static EditAktifitasDialogFragment newInstance(String param1, String param2) {
         EditAktifitasDialogFragment fragment = new EditAktifitasDialogFragment();
         Bundle args = new Bundle();
@@ -102,6 +97,7 @@ public class EditAktifitasDialogFragment extends DialogFragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        ketAktivitasView = view.findViewById(R.id.aktifitas_keterangan);
         spinnerAktifitas = view.findViewById(R.id.aktifitas_spinner);
         simpanAktivitas = view.findViewById(R.id.btn_simpan_aktifitas);
         jenisAktifitasSpinnerArray = new ArrayList<String>();
@@ -142,6 +138,9 @@ public class EditAktifitasDialogFragment extends DialogFragment {
                                      nAktifitas = jenisAktifitasSpinnerArray.get(position);
                                      bAktifitas = bobotAktifitas.get(position);
                                      kAktifitas = keteranganAktifitas.get(position);
+
+                                     ketAktivitasView.setText(kAktifitas);
+                                    ketAktivitasView.setVisibility(View.VISIBLE);
 
                                     simpanAktivitas.setOnClickListener(new View.OnClickListener() {
                                         @Override
