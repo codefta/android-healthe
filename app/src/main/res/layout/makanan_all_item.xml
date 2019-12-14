@@ -12,6 +12,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/makanan_image"
+            android:layout_centerVertical="true"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginRight="8dp"
@@ -53,6 +54,7 @@
             android:text="Hitung" />
 
         <LinearLayout
+            android:id="@+id/info_gizi_makanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -64,6 +66,10 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/makanan_kalori"
@@ -73,6 +79,18 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_toRightOf="@id/makanan_kalori"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kkal"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="5dp"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,14 +108,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/zero"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/colorBlack"
-                    android:id="@+id/makanan_protein"
-                    android:textSize="14sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/colorBlack"
+                        android:id="@+id/makanan_protein"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_toRightOf="@id/makanan_protein"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="gr"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="5dp"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -115,6 +150,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,6 +163,17 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_toRightOf="@id/makanan_karbohidrat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="gr"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="5dp"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,6 +192,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,6 +205,16 @@
                     android:textColor="@color/colorBlack"
                     android:id="@+id/makanan_lemak"
                     android:textSize="14sp" />
+                    <TextView
+                        android:layout_toRightOf="@id/makanan_lemak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="gr"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="5dp"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -159,5 +225,17 @@
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
+        <Button
+            android:id="@+id/btn_hitung_kal_makanan"
+            android:layout_below="@id/info_gizi_makanan"
+            android:layout_alignParentRight="true"
+            android:layout_width="100dp"
+            android:textSize="10dp"
+            android:background="@color/colorGreen"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="8dp"
+            android:padding="0dp"
+            android:layout_height="24dp"
+            android:text="+ Hitung" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

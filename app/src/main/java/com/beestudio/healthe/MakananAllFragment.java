@@ -11,20 +11,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Layout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beestudio.healthe.models.MakananResponse;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +58,9 @@ public class MakananAllFragment extends Fragment {
 
     FirebaseFirestore db;
     FirestoreRecyclerAdapter adapter;
+    FirebaseUser user;
 
+    String jenisMakanan;
 
     public MakananAllFragment() {
         // Required empty public constructor
@@ -82,13 +94,33 @@ public class MakananAllFragment extends Fragment {
         makananList.setLayoutManager(new LinearLayoutManager(getContext()));
         ButterKnife.bind(getActivity());
         db = FirebaseFirestore.getInstance();
-        getMakanan();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            jenisMakanan= bundle.getString("jenisMakanan", "all");
+//            Toast.makeText(getActivity(), jenisMakanan, Toast.LENGTH_SHORT).show();
+        }
+
+        getMakanan(jenisMakanan);
         return viewLayout;
     }
 
 
-    private void getMakanan() {
-        Query query = db.collection("makanan");
+    private void getMakanan(String jenisMakanan) {
+        Query query;
+        if(TextUtils.equals(jenisMakanan, "ringan")) {
+            query = db.collection("makanan").whereEqualTo("jenis", "Snack");;
+        } else if(TextUtils.equals(jenisMakanan, "berat")) {
+            query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat");;
+        } else if(TextUtils.equals(jenisMakanan, "minuman")) {
+            query = db.collection("makanan").whereEqualTo("jenis", "Minuman");;
+        } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
+            query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur");;
+        } else{
+            query= db.collection("makanan");
+        }
+
         FirestoreRecyclerOptions<MakananResponse> res = new FirestoreRecyclerOptions.Builder<MakananResponse>()
                 .setQuery(query, MakananResponse.class)
                 .build();
@@ -111,6 +143,38 @@ public class MakananAllFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(model.getLinkUrl()));
                     startActivity(i);
+                });
+
+                holder.btnHitung.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Test Button Hitung", Toast.LENGTH_LONG).show();
+                        Map<String, Object> objMakanan = new HashMap<>();
+                        objMakanan.put("nama", model.getNama());
+                        objMakanan.put("jenis", model.getJenis());
+                        objMakanan.put("jumlahKalori", model.getJumlahKalori());
+                        objMakanan.put("jumlahKarbohidrat", model.getJumlahKarbohidrat());
+                        objMakanan.put("jumlahProtein", model.getJumlahProtein());
+                        objMakanan.put("jumlahLemak", model.getJumlahLemak());
+                        objMakanan.put("linkUrl", model.getLinkUrl());
+                        objMakanan.put("imageUrl", model.getImageUrl());
+
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("makananDikonsumsi", objMakanan);
+
+                        db.collection("users").document(user.getUid())
+                                .update(userData)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        if(task.isSuccessful()) {
+                                            holder.btnHitung.setBackgroundColor(getResources().getColor(R.color.colorYellow));
+                                            holder.btnHitung.setText("Dihitung");
+                                        }
+                                    }
+                                });
+                    }
                 });
             }
 
@@ -136,6 +200,7 @@ public class MakananAllFragment extends Fragment {
         TextView makananKarbohidrat;
         TextView makananProtein;
         TextView makananLemak;
+        Button btnHitung;
 
         public MakananHolder(View itemView) {
             super(itemView);
@@ -146,6 +211,7 @@ public class MakananAllFragment extends Fragment {
             makananProtein = itemView.findViewById(R.id.makanan_protein);
             makananLemak = itemView.findViewById(R.id.makanan_lemak);
             makananKarbohidrat = itemView.findViewById(R.id.makanan_karbohidrat);
+            btnHitung = itemView.findViewById(R.id.btn_hitung_kal_makanan);
         }
     }
 

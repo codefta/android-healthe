@@ -359,10 +359,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
             android:scrollbars="none"
             android:layout_marginBottom="8dp">
 
             <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -370,33 +372,67 @@
                 <Button
                     android:id="@+id/btn_all_makanan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingLeft="4dp"
                     android:textAllCaps="false"
+                    android:background="@color/colorAccentBg"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14dp"
                     android:text="Semua" />
 
                 <Button
+                    android:id="@+id/btn_ringan_makanan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingRight="6dp"
+                    android:paddingLeft="6dp"
                     android:textAllCaps="false"
+                    android:background="@color/colorAccentBg"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14dp"
                     android:text="Makanan Ringan" />
 
                 <Button
+                    android:id="@+id/btn_berat_makanan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingRight="6dp"
+                    android:paddingLeft="6dp"
                     android:textAllCaps="false"
+                    android:background="@color/colorAccentBg"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14dp"
                     android:text="Makanan Berat" />
 
                 <Button
+                    android:id="@+id/btn_minuman_makanan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingRight="6dp"
+                    android:paddingLeft="6dp"
                     android:textAllCaps="false"
-                    android:text="Buah dan Sayur" />
+                    android:background="@color/colorAccentBg"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14dp"
+                    android:text="Minuman" />
 
                 <Button
+                    android:id="@+id/btn_buah_makanan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
                     android:textAllCaps="false"
-                    android:text="Minuman" />
+                    android:paddingRight="6dp"
+                    android:paddingLeft="6dp"
+                    android:background="@color/colorAccentBg"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14dp"
+                    android:text="Buah &amp; sayur" />
 
             </LinearLayout>
 
@@ -405,6 +441,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
             android:id="@+id/container_makanan">
 
         </FrameLayout>

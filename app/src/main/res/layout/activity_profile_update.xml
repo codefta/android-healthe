@@ -12,25 +12,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorAccent"
         android:elevation="4dp"
-        app:titleTextColor="@color/colorWhite"
         android:theme="@style/ToolbarTheme"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+        app:titleTextColor="@color/colorWhite"
         tools:targetApi="lollipop" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="10dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_photo"
-            android:layout_width="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_height="150dp"
-            android:src="@drawable/ic_profile"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,13 +24,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_photo"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_profile" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -57,42 +57,18 @@
                 <EditText
                     android:id="@+id/input_nama"
                     android:layout_width="match_parent"
-                    android:padding="15dp"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text=""
+                    android:padding="15dp"
                     tools:ignore="TextFields" />
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_medium"
-                    android:text="@string/register_nomor_telepon_tv" />
-
-                <EditText
-                    android:id="@+id/input_nohp"
-                    android:layout_width="match_parent"
-                    android:padding="15dp"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:inputType="number"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,10 +78,10 @@
 
                 <RadioGroup
                     android:id="@+id/gender"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/gender_pria"
@@ -119,8 +95,8 @@
                     <RadioButton
                         android:id="@+id/gender_wanita"
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:checked="false"
                         android:text="@string/perempuan" />
 
@@ -132,122 +108,109 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_medium"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/register_usia_tv" />
+                    android:text="Tanggal Lahir" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/input_tgl_lahir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/input_usia"
-                        android:padding="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="number"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/tahun_view_regist"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:background="@color/colorAccentBg"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:padding="8dp"
-                        />
-                </LinearLayout>
-
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:padding="15dp"
+                    tools:ignore="Deprecated" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_medium"
-                    android:text="@string/register_bb_tb" />
-
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/input_tb"
-                        android:padding="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="number"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:text="@string/register_bb_tb" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Cm"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:background="@color/colorAccentBg"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:padding="8dp"
-                        />
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/input_tb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:padding="15dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:padding="8dp"
+                            android:text="Cm"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_medium"
-                    android:text="@string/register_bb_tv" />
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/input_bb"
-                        android:padding="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="number"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:text="@string/register_bb_tv" />
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/kg"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:background="@color/colorAccentBg"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:padding="8dp"
-                        />
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/input_bb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:padding="15dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:padding="8dp"
+                            android:text="@string/kg"
+
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -258,16 +221,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="70dp"
-                android:textSize="28sp"
-                android:fontFamily="@font/quicksand_medium"
-                android:textColor="@color/colorWhite"
                 android:background="@drawable/bg_button_login"
-                android:text="@string/submit"/>
+                android:fontFamily="@font/quicksand_medium"
+                android:text="@string/submit"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
 
         </LinearLayout>
 
     </ScrollView>
-
 
 
 </LinearLayout>

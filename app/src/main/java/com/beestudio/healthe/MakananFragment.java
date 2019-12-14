@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MakananFragment extends Fragment implements View.OnClickListener {
+public class MakananFragment extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,7 +49,8 @@ public class MakananFragment extends Fragment implements View.OnClickListener {
     FirebaseFirestore db;
 
     TextView makanPagi, makanSiang, makanMalam, makanSnack, namaUser;
-    Button makananAll;
+    Button makananAll, makananRingan, makananBerat, minuman, buahSayur;
+    Bundle makananMessage;
 
     public MakananFragment() {
         // Required empty public constructor
@@ -87,8 +88,86 @@ public class MakananFragment extends Fragment implements View.OnClickListener {
         makanSnack = view.findViewById(R.id.makan_ringan_count);
         namaUser = view.findViewById(R.id.nama_tv);
         makananAll = view.findViewById(R.id.btn_all_makanan);
+        makananRingan = view.findViewById(R.id.btn_ringan_makanan);
+        makananBerat = view.findViewById(R.id.btn_berat_makanan);
+        minuman = view.findViewById(R.id.btn_minuman_makanan);
+        buahSayur = view.findViewById(R.id.btn_buah_makanan);
         updateView();
-        openFragment(MakananAllFragment.newInstance("", ""));
+
+        makananMessage = new Bundle();
+        makananMessage.putString("jenisMakanan", "all");
+        openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+        makananAll.setBackgroundColor(getResources().getColor(R.color.colorHealthe));
+
+        makananAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makananAll.setBackground(getResources().getDrawable(R.color.colorAccent));
+                makananRingan.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananBerat.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                minuman.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+
+                makananMessage.putString("jenisMakanan", "all");
+                Toast.makeText(getActivity(), "Daftar Semua Makanan", Toast.LENGTH_LONG).show();
+                openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+            }
+        });
+
+        makananRingan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makananRingan.setBackground(getResources().getDrawable(R.color.colorAccent));
+                makananAll.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananBerat.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                minuman.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananMessage.putString("jenisMakanan", "ringan");
+
+                Toast.makeText(getActivity(), "Daftar Makanan Ringan", Toast.LENGTH_LONG).show();
+                openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+            }
+        });
+
+        makananBerat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makananRingan.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananAll.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananBerat.setBackground(getResources().getDrawable(R.color.colorAccent));
+                minuman.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananMessage.putString("jenisMakanan", "berat");
+                openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+            }
+        });
+
+        minuman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makananRingan.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananAll.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananBerat.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                minuman.setBackground(getResources().getDrawable(R.color.colorAccent));
+                buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananMessage.putString("jenisMakanan", "minuman");
+                openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+            }
+        });
+
+        buahSayur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makananRingan.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananAll.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                makananBerat.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                minuman.setBackground(getResources().getDrawable(R.color.colorAccentBg));
+                buahSayur.setBackground(getResources().getDrawable(R.color.colorAccent));
+                makananMessage.putString("jenisMakanan", "buahSayur");
+                openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
+            }
+        });
+
         return view;
     }
 
@@ -129,22 +208,12 @@ public class MakananFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void openFragment(Fragment fragment) {
+    public void openFragment(Fragment fragment, Bundle makananMessage) {
+        fragment.setArguments(makananMessage);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container_makanan, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_all_makanan:
-                openFragment(MakananAllFragment.newInstance("", ""));
-                makananAll.setBackgroundColor(getResources().getColor(R.color.colorHealthe));
-                Toast.makeText(getActivity(), "Button All", Toast.LENGTH_LONG).show();
-                break;
-        }
-    }
 }

@@ -7,21 +7,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,13 +35,23 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
+import org.joda.time.Years;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,19 +61,21 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore db;
     StorageReference storageReference;
-
-    EditText namaEditText, noHpEditText;
+    private Button btnSubmit;
+    String storagePath = "profile_image/";
+    int imageRequestCode = 7;
+    Boolean processSubmit = false;
+    ImageView profileFoto;
+    CircleImageView chooseImage;
+    Button chooseButton;
+    EditText namaEditText, tglLahirEditText, tbEditText, bbEditText;
     Uri filePathUri;
-    EditText usia, tb, bb;
     RadioGroup gender;
     RadioButton genderSelected;
-    ImageView profileFoto;
-    Button submit;
-    CircleImageView chooseImage;
 
-    int imageRequestCode = 7;
     ProgressDialog progressDialog;
-    String storagePath = "profile_image/";
+    DatePickerDialog datePicker;
+    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,23 +86,24 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        storageReference = FirebaseStorage.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        setEditProfilView();
-
-        profileFoto = findViewById(R.id.profile_photo);
-        namaEditText = findViewById(R.id.input_nama);
-        noHpEditText = findViewById(R.id.input_nohp);
-        usia = findViewById(R.id.input_usia);
-        tb = findViewById(R.id.input_tb);
-        bb = findViewById(R.id.input_bb);
-        gender = findViewById(R.id.gender);
-
-        submit = findViewById(R.id.submit_datadiri);
-        chooseImage = findViewById(R.id.profile_photo);
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         progressDialog = new ProgressDialog(ProfileUpdateActivity.this);
+        progressDialog.setMessage(getString(R.string.loading));
+
+        btnSubmit = findViewById(R.id.submit_datadiri);
+        namaEditText = findViewById(R.id.input_nama);
+        tglLahirEditText = findViewById(R.id.input_tgl_lahir);
+        tbEditText = findViewById(R.id.input_tb);
+        bbEditText = findViewById(R.id.input_bb);
+        gender = findViewById(R.id.gender);
+        profileFoto = findViewById(R.id.profile_photo);
+        chooseImage = findViewById(R.id.profile_photo);
+
+        loadProfile();
+
 
         chooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +116,32 @@ public class ProfileUpdateActivity extends AppCompatActivity {
             }
         });
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
+        tglLahirEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImage();
+                new DatePickerDialog(ProfileUpdateActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedGender = gender.getCheckedRadioButtonId();
+                genderSelected = findViewById(selectedGender);
+                String gender = genderSelected.getText().toString();
+                uploadImage(gender);
+
             }
         });
     }
@@ -116,39 +155,44 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setEditProfilView() {
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+        tglLahirEditText.setText(sdf.format(myCalendar.getTime()));
+    }
 
-        final DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
+    private void loadProfile() {
 
-                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
-                        ? "Local" : "Server";
+        db.collection("users").document(user.getUid())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
 
-                if (snapshot != null && snapshot.exists()) {
-                    Picasso.get().load(snapshot.get("profile_url").toString()).into(profileFoto);
-                    if(snapshot.get("jenis_kelamin").toString() == "Laki-laki") {
-                        gender.check(R.id.gender_pria);
-                    } else {
-                        gender.check(R.id.gender_pria);
+                        String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                                ? "Local" : "Server";
+
+                        if (snapshot != null && snapshot.exists()) {
+                            Glide.with(ProfileUpdateActivity.this).load(snapshot.get("profilUrl").toString()).centerCrop().into(profileFoto);
+                            if(snapshot.get("jenisKelamin").toString() == "Laki-laki") {
+                                gender.check(R.id.gender_pria);
+                            } else {
+                                gender.check(R.id.gender_wanita);
+                            }
+
+                            namaEditText.setText(snapshot.get("nama").toString());
+                            bbEditText.setText(snapshot.get("beratBadan").toString());
+                            tbEditText.setText(snapshot.get("tinggiBadan").toString());
+                            tglLahirEditText.setText(snapshot.get("tglLahir").toString());
+
+                        } else {
+                            Toast.makeText(ProfileUpdateActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    namaEditText.setText(snapshot.get("nama").toString());
-                    noHpEditText.setText(snapshot.get("no_hp").toString());
-                    usia.setText(snapshot.get("usia").toString());
-                    tb.setText(snapshot.get("tinggi_badan").toString());
-                    bb.setText(snapshot.get("berat_badan").toString());
-                    bb.setText(snapshot.get("berat_badan").toString());
-
-                } else {
-                    Toast.makeText(ProfileUpdateActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                });
     }
 
     @Override
@@ -169,13 +213,12 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    public void uploadImage() {
-
+    public void uploadImage(String gender) {
 
         if(filePathUri != null) {
-            progressDialog.setTitle("Sedang mengupload gambar...");
 
             progressDialog.show();
+            progressDialog.setCanceledOnTouchOutside(false);
 
             StorageReference finalStorageReference = storageReference.child(storagePath + user.getUid() + "." + getFileExtension(filePathUri));
 
@@ -183,22 +226,49 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(ProfileUpdateActivity.this, "Upload gambar berhasil", Toast.LENGTH_SHORT).show();
-
-                            int selectedGender = gender.getCheckedRadioButtonId();
-
-                            genderSelected = (RadioButton) findViewById(selectedGender);
 
                             finalStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    addToDatabase(namaEditText.getText().toString(), noHpEditText.getText().toString(), uri.toString(), genderSelected.getText().toString(), Integer.parseInt(usia.getText().toString()), Integer.parseInt(tb.getText().toString()), Integer.parseInt(bb.getText().toString()));
+                                    String userId = user.getUid();
+                                    String nama = namaEditText.getText().toString();
+                                    String jenisKelamin = gender;
+                                    String tglLahir = tglLahirEditText.getText().toString();
+                                    int tb = Integer.parseInt(tbEditText.getText().toString());
+                                    int bb = Integer.parseInt(bbEditText.getText().toString());
+                                    boolean isBayi = isBayi(tglLahir);
+                                    String profil_url = uri.toString();
+                                    Map<String, Object> userData= new HashMap<>();
+                                    userData.put("userId", userId);
+                                    userData.put("nama", nama);
+                                    userData.put("jenisKelamin", jenisKelamin);
+                                    userData.put("tglLahir", tglLahir);
+                                    userData.put("tinggiBadan", tb);
+                                    userData.put("beratBadan", bb);
+                                    userData.put("isBayi", isBayi);
+                                    userData.put("profilUrl", profil_url);
+
+                                    db.collection("users").document(user.getUid())
+                                            .update(userData)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(ProfileUpdateActivity.this, "Berhasil Mengubah data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(ProfileUpdateActivity.this, "Gagal menghubah data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                    progressDialog.dismiss();
+                                    Toast.makeText(ProfileUpdateActivity.this, "Upload gambar berhasil", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new  Intent(ProfileUpdateActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                 }
                             });
-
-                            Toast.makeText(ProfileUpdateActivity.this, "Anda berhasil Mengupdate data", Toast.LENGTH_SHORT).show();
-
 
                         }
                     })
@@ -207,6 +277,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
                             Toast.makeText(ProfileUpdateActivity.this, "Upload gambar gagal", Toast.LENGTH_SHORT).show();
+                            processSubmit = false;
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -216,38 +287,53 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            addToDatabase(namaEditText.getText().toString(), noHpEditText.getText().toString(),null, genderSelected.getText().toString(), Integer.parseInt(usia.getText().toString()), Integer.parseInt(tb.getText().toString()), Integer.parseInt(bb.getText().toString()));
+            Toast.makeText(ProfileUpdateActivity.this, gender, Toast.LENGTH_SHORT).show();
+            String userId = user.getUid();
+            String nama = namaEditText.getText().toString();
+            String jenisKelamin = gender;
+            String tglLahir = tglLahirEditText.getText().toString();
+            int tb = Integer.parseInt(tbEditText.getText().toString());
+            int bb = Integer.parseInt(bbEditText.getText().toString());
+            boolean isBayi = isBayi(tglLahir);
+            Map<String, Object> userData= new HashMap<>();
+            userData.put("userId", userId);
+            userData.put("nama", nama);
+            userData.put("jenisKelamin", jenisKelamin);
+            userData.put("tglLahir", tglLahir);
+            userData.put("tinggiBadan", tb);
+            userData.put("beratBadan", bb);
+            userData.put("isBayi", isBayi);
+
+            db.collection("users").document(user.getUid())
+                    .update(userData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(ProfileUpdateActivity.this, "Berhasil Mengubah data", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ProfileUpdateActivity.this, "Gagal Mengubah data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            progressDialog.dismiss();
         }
     }
 
-    public void addToDatabase(String nama, String noHp, String imageUrl, String gender, int usia, int tb, int bb) {
-        Map<String, Object> userAdd = new HashMap<>();
-        userAdd.put("nama", nama);
-        userAdd.put("no_hp", noHp);
-        if(imageUrl != null) {
-            userAdd.put("profile_url", imageUrl);
+    private boolean isBayi(String birthday) {
+        DateTimeFormatter df = DateTimeFormat.forPattern("dd/MM/yyyy");
+        //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(birthday, df);
+        LocalDate today = LocalDate.now();
+        int usia = Months.monthsBetween(localDate,today).getMonths();
+
+        if(usia >= 0 && usia <= 12) {
+            return true;
+        } else {
+            return false;
         }
-        userAdd.put("user_id", user.getUid());
-        userAdd.put("email", user.getEmail());
-        userAdd.put("jenis_kelamin", gender);
-        userAdd.put("usia", usia);
-        userAdd.put("tinggi_badan", tb);
-        userAdd.put("berat_badan", bb);
-
-        db.collection("users").document(user.getUid().toString())
-                .set(userAdd)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(ProfileUpdateActivity.this, "Berhasil Mengupdate data", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ProfileUpdateActivity.this, "Gagal Mengupdate data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
 
     KebutuhanGiziUser kebutuhanGiziUser;
+    Button tambahData;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,6 +89,7 @@ public class HomeFragment extends Fragment {
         stresStatus = view.findViewById(R.id.stres_tv);
         aktifitasChange = view.findViewById(R.id.aktivitas_change);
         stresChange = view.findViewById(R.id.stres_change);
+        tambahData = view.findViewById(R.id.tambah_data_makanan);
 
         aktifitasChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,15 +107,34 @@ public class HomeFragment extends Fragment {
 
         updateHomeView();
         Map<String, Object> o  = new HashMap<>();
-        o.put("nama", "Kerupuk / Biskuit");
-        o.put("jumlahKalori", 20);
-        o.put("jumlahProtein", 0.3);
-        o.put("jumlahLemak", 1.01);
-        o.put("jenisKarbohidrat", 2.44);
-        o.put("jenis", "Snack");
-        o.put("imageUrl", "https://static.republika.co.id/uploads/images/inpicture_slide/biskuit-ilustrasi-_160715070932-588.jpg");
+        o.put("nama", "Jus Jeruk");
+        o.put("jumlahKalori", 112);
+        o.put("jumlahKarbohidrat", 25.79);
+        o.put("jumlahProtein", 1.74);
+        o.put("jumlahLemak", 0.5);
+        o.put("jenis", "Minuman");
+        o.put("imageUrl", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/A_glass_of_orange_juice_%282015-10-10%29.JPG/1200px-A_glass_of_orange_juice_%282015-10-10%29.JPG");
+        o.put("linkUrl", "https://www.fatsecret.co.id/kalori-gizi/umum/jus-jeruk");
 
-//        db.collection("makanan").document().set(o);
+        Map<String, Object> o2  = new HashMap<>();
+        o2.put("nama", "Buah Apel");
+        o2.put("jumlahKalori", 72);
+        o2.put("jumlahKarbohidrat", 19.06);
+        o2.put("jumlahProtein", 0.36);
+        o2.put("jumlahLemak", 0.5);
+        o2.put("jenis", "Buah dan Sayur");
+        o2.put("imageUrl", "https://www.parentingclub.co.id/uploads/default/files/article/578/eksperimen-menyegarkan-apel_578_Eksperimen_Menyegarkan_Apel_261-Eksperimen-Menyegarkan-Apel-th.jpg");
+        o2.put("linkUrl", "https://www.fatsecret.co.id/kalori-gizi/umum/apel");
+
+//        tambahData.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                db.collection("makanan").document().set(o);
+//                db.collection("makanan").document().set(o2);
+//
+//            }
+//        });
+        tambahData.setVisibility(View.GONE);
         return view;
     }
 
