@@ -92,6 +92,7 @@ public class EditStresDialogFragment extends DialogFragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        stresKeteranganView = view.findViewById(R.id.stres_keterangan_tv);
         spinnerStres = view.findViewById(R.id.stres_spinner);
         simpanStres = view.findViewById(R.id.btn_simpan_stres);
         jenisStresSpinnerArray = new ArrayList<String>();
@@ -118,7 +119,6 @@ public class EditStresDialogFragment extends DialogFragment {
                                 bobotStres.add(Double.valueOf(document.get("bobot").toString()));
                                 keteranganStres.add(document.get("keterangan").toString());
                                 jenisStresSpinnerArray.add(document.get("tingkatStres").toString());
-
                                 jenisStresId.add(document.getId());
 
                             }

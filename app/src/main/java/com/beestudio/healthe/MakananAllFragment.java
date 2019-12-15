@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +31,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +68,7 @@ public class MakananAllFragment extends Fragment {
     FirebaseUser user;
 
     String jenisMakanan;
+    String idMakanan;
 
     public MakananAllFragment() {
         // Required empty public constructor
@@ -145,9 +153,34 @@ public class MakananAllFragment extends Fragment {
                     startActivity(i);
                 });
 
+//                DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
+//                String docId = dSnap.getId();
+//
+//                db.collection("users").document(user.getUid())
+//                        .collection("makananDikonsumsi")
+//                        .whereEqualTo("makananId", docId)
+//                        .limit(1)
+//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                                if (!queryDocumentSnapshots.isEmpty()){
+//
+////                                    for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+////                                        idMakanan = doc.get("makananId").toString();
+////
+////                                        if(idMakanan)
+////                                    }
+//                                    holder.btnHitung.setBackgroundColor(getResources().getColor(R.color.colorYellow));
+//                                    holder.btnHitung.setText("- Dihitung");
+//                                }
+//                            }
+//                        });
+
                 holder.btnHitung.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        String docId = dSnap.getId();
                         Toast.makeText(getActivity(), "Test Button Hitung", Toast.LENGTH_LONG).show();
                         Map<String, Object> objMakanan = new HashMap<>();
                         objMakanan.put("nama", model.getNama());
@@ -158,16 +191,14 @@ public class MakananAllFragment extends Fragment {
                         objMakanan.put("jumlahLemak", model.getJumlahLemak());
                         objMakanan.put("linkUrl", model.getLinkUrl());
                         objMakanan.put("imageUrl", model.getImageUrl());
-
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("makananDikonsumsi", objMakanan);
+                        objMakanan.put("makananId", docId);
 
                         db.collection("users").document(user.getUid())
-                                .update(userData)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .collection("makananDikonsumsi")
+                                .add(objMakanan)
+                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
                                         if(task.isSuccessful()) {
                                             holder.btnHitung.setBackgroundColor(getResources().getColor(R.color.colorYellow));
                                             holder.btnHitung.setText("Dihitung");
@@ -226,8 +257,5 @@ public class MakananAllFragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
-
-
-
 
 }

@@ -20,7 +20,7 @@ public class KebutuhanGiziUser {
             if(isBayi == true) {
                 return (usia / 2.0) + 4;
             } else {
-                return (usia * 2.) + 8;
+                return (usia * 2.0) + 8;
             }
         }
     }
@@ -30,21 +30,21 @@ public class KebutuhanGiziUser {
 
         if(isBayi) {
             if(beratBadanAktual > kegemukan) {
-                return 22.1 + 31.05 * beratBadanAktual + 1.16 * tinggiBadan;
-            } else {
                 return 22.1 + 31.05 * beratBadanIdeal + 1.16 * tinggiBadan;
+            } else {
+                return 22.1 + 31.05 * beratBadanAktual + 1.16 * tinggiBadan;
             }
         } else if(gender == "Perempuan") {
             if(beratBadanAktual > kegemukan) {
-                return 66.5 + 13.8 * beratBadanAktual + 5.0 * tinggiBadan - 6.8 * usia;
-            } else {
                 return 66.5 + 13.8 * beratBadanIdeal + 5.0 * tinggiBadan - 6.8 * usia;
+            } else {
+                return 66.5 + 13.8 * beratBadanAktual + 5.0 * tinggiBadan - 6.8 * usia;
             }
         } else {
             if (beratBadanAktual > kegemukan) {
-                return 655.1 + 9.6 * beratBadanAktual  + 1.9 * tinggiBadan - 4.7 * usia;
-            } else {
                 return 655.1 + 9.6 * beratBadanIdeal  + 1.9 * tinggiBadan - 4.7 * usia;
+            } else {
+                return 655.1 + 9.6 * beratBadanAktual  + 1.9 * tinggiBadan - 4.7 * usia;
             }
         }
     }

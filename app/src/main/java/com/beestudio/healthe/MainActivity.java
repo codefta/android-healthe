@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends FragmentActivity {
@@ -34,9 +37,9 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        checkDataDiri();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
+//        checkDataDiri();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
@@ -80,30 +83,77 @@ public class MainActivity extends FragmentActivity {
         }
     };
 
-    private void checkDataDiri() {
+//    private void checkDataDiri() {
 
-        final DocumentReference docRef = db.collection("users").document(user.getUid());
+//        db.collection("users").document(user.getUid())
+//        .get()
+//        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if(!task.isSuccessful()) {
+//                }
+//            }
+//        });
+//
+//
+//        if(docRef == null) {
+//        }
 
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
+//        DocumentReference docRef = (DocumentReference) db.collection("users").document(user.getUid());
 
-                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
-                        ? "Local" : "Server";
+//        db.collection("users").whereEqualTo("userId", user.getUid())
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                if(TextUtils.isEmpty(document.get("userId").toString())) {
+//                                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
+//                                    startActivity(intent);
+//                                }
+//                            }
+//                        } else {
+//
+//                        }
+//                    }
+//                });
 
-                if (snapshot == null && !snapshot.exists()) {
-                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                    startActivity(intent);
+//        if(TextUtils.isEmpty(docRef.toString())) {
+//                Intent intent = new Intent(MainActivity.this, UserActivity.class);
+//                startActivity(intent);
+//
+//        }
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//
+//                    }
+//                }
+//            }
+//        });
 
-                } else {
-                    Toast.makeText(MainActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+//        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot snapshot,
+//                                @Nullable FirebaseFirestoreException e) {
+//                if (e != null) {
+//                    return;
+//                }
+//
+//                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+//                        ? "Local" : "Server";
+//
+//                if(TextUtils.isEmpty(snapshot.get("nama").toString())) {
+//
+//                } else {
+//                    Toast.makeText(MainActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
 
 }
