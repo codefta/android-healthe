@@ -8,19 +8,19 @@ public class RekomendasiMakanan {
     FirebaseUser user;
     FirebaseFirestore db;
 
-    public double hitungMakanPagi(double tee) {
-        return (20.0 / 100.0) * tee;
+    public double hitungMakanPagi(double tee, double bobotMakanPagi) {
+        return bobotMakanPagi * tee;
     }
 
-    public double hitungMakanSiang(double tee) {
-        return (30.0 / 100.0) * tee;
+    public double hitungMakanSiang(double tee, double bobotMakanSiang ) {
+        return bobotMakanSiang * tee;
     }
 
-    public double hitungMakanSnack(double tee) {
-        return (10.0 / 100.0) * tee;
+    public double hitungMakanSnack(double tee, double bobotMakanSnack) {
+        return bobotMakanSnack * tee;
     }
 
-    public double hitungMakanMalam(double tee) {
-        return (20.0 / 100.0) * tee;
+    public double hitungMakanMalam(double tee, double bobotMakanMalam) {
+        return bobotMakanMalam * tee;
     }
 }

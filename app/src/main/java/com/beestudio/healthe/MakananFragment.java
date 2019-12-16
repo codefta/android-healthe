@@ -23,6 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
@@ -51,6 +53,8 @@ public class MakananFragment extends Fragment  {
     TextView makanPagi, makanSiang, makanMalam, makanSnack, namaUser;
     Button makananAll, makananRingan, makananBerat, minuman, buahSayur;
     Bundle makananMessage;
+
+    double tee;
 
     public MakananFragment() {
         // Required empty public constructor
@@ -188,17 +192,65 @@ public class MakananFragment extends Fragment  {
                     Map obj = snapshot.getData();
                     Map kebutuhanGizi = (Map) obj.get("kebutuhanGizi");
                     RekomendasiMakanan rekomendasiMakanan = new RekomendasiMakanan();
-                    double tee = Double.valueOf(kebutuhanGizi.get("totalGizi").toString());
-                    double mPagi = rekomendasiMakanan.hitungMakanPagi(tee);
-                    double mSiang = rekomendasiMakanan.hitungMakanSiang(tee);
-                    double mSnack = rekomendasiMakanan.hitungMakanSnack(tee);
-                    double mMalam = rekomendasiMakanan.hitungMakanMalam(tee);
+                    tee = Double.valueOf(kebutuhanGizi.get("totalGizi").toString());
+
+                    db.collection("bobot_makanan")
+                            .whereEqualTo("jenisMakan", "Makan Pagi")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotMakan = Double.valueOf(document.get("bobotMakan").toString());
+                                        double mPagi = rekomendasiMakanan.hitungMakanPagi(tee, bobotMakan);
+                                        makanPagi.setText(new DecimalFormat("##.#").format(mPagi));
+                                    }
+                                }
+                            });
+
+                    db.collection("bobot_makanan")
+                            .whereEqualTo("jenisMakan", "Makan Siang")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotMakan = Double.valueOf(document.get("bobotMakan").toString());
+                                        double mSiang = rekomendasiMakanan.hitungMakanPagi(tee, bobotMakan);
+                                        makanSiang.setText(new DecimalFormat("##.#").format(mSiang));
+                                    }
+                                }
+                            });
+
+                    db.collection("bobot_makanan")
+                            .whereEqualTo("jenisMakan", "Makan Malam")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotMakan = Double.valueOf(document.get("bobotMakan").toString());
+                                        double mMalam = rekomendasiMakanan.hitungMakanPagi(tee, bobotMakan);
+                                        makanMalam.setText(new DecimalFormat("##.#").format(mMalam));
+                                    }
+                                }
+                            });
+
+                    db.collection("bobot_makanan")
+                            .whereEqualTo("jenisMakan", "Snack")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotMakan = Double.valueOf(document.get("bobotMakan").toString());
+                                        double snack = rekomendasiMakanan.hitungMakanPagi(tee, bobotMakan);
+                                        makanSnack.setText(new DecimalFormat("##.#").format(snack));
+                                    }
+                                }
+                            });
 
                     namaUser.setText(snapshot.get("nama").toString());
-                    makanPagi.setText(new DecimalFormat("##.#").format(mPagi));
-                    makanSiang.setText(new DecimalFormat("##.#").format(mSiang));
-                    makanSnack.setText(new DecimalFormat("##.#").format(mSnack));
-                    makanMalam.setText(new DecimalFormat("##.#").format(mMalam));
 
                 } else {
                     Toast.makeText(getActivity(), "Data Kosong", Toast.LENGTH_SHORT).show();

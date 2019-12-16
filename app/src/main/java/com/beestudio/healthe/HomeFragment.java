@@ -54,6 +54,8 @@ public class HomeFragment extends Fragment {
     Button tambahData;
 
     double protein;
+    double karbohidrat;
+    double lemak;
     double tee;
     Map<String, Object> gizi;
 
@@ -218,9 +220,9 @@ public class HomeFragment extends Fragment {
                                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                         double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
                                         double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
-                                        double protein = kebutuhanGiziUser.hitungProtein(tee, kebutuhanHarian, bobotKandungan);
+                                        protein = kebutuhanGiziUser.hitungProtein(tee, kebutuhanHarian, bobotKandungan);
+
                                         proteinCount.setText(new DecimalFormat("##.#").format(protein));
-                                        gizi.put("protein", protein);
                                     }
                                 }
                             });
@@ -234,9 +236,9 @@ public class HomeFragment extends Fragment {
                                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                         double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
                                         double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
-                                        double karbohidrat = kebutuhanGiziUser.hitungKarbohidrat(tee, kebutuhanHarian, bobotKandungan);
+                                        karbohidrat = kebutuhanGiziUser.hitungKarbohidrat(tee, kebutuhanHarian, bobotKandungan);
+
                                         karbohidratCount.setText(new DecimalFormat("##.#").format(karbohidrat));
-                                        gizi.put("karbohidrat", karbohidrat);
                                     }
                                 }
                             });
@@ -250,14 +252,17 @@ public class HomeFragment extends Fragment {
                                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                         double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
                                         double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
-                                        double lemak = kebutuhanGiziUser.hitungLemak(tee, kebutuhanHarian, bobotKandungan);
+                                        lemak = kebutuhanGiziUser.hitungLemak(tee, kebutuhanHarian, bobotKandungan);
+
                                         lemakCount.setText(new DecimalFormat("##.#").format(lemak));
-                                        gizi.put("lemak", lemak);
                                     }
                                 }
                             });
 
                     gizi.put("beratBadanIdeal", bbi);
+                    gizi.put("lemak", lemak);
+                    gizi.put("karbohidrat", karbohidrat);
+                    gizi.put("protein", protein);
                     gizi.put("bmr", bmr);
                     gizi.put("totalGizi", tee);
 
