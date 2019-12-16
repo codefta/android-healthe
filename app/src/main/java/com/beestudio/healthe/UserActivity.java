@@ -182,10 +182,7 @@ public class UserActivity extends FragmentActivity {
                                     int bb = Integer.parseInt(bbEditText.getText().toString());
                                     boolean isBayi = isBayi(tglLahir);
                                     boolean isAnak = isAnak(tglLahir);
-                                    String jenisAktifitas = "";
-                                    String jenisStress = "";
                                     String profil_url = uri.toString();
-//                                    userAdd.addUserToDatabase(userId, nama, jenisKelamin, tglLahir, tb, bb, isBayi, isAnak, jenisAktifitas, jenisStress, profil_url, UserActivity.this);
                                     Map<String, Object> userData= new HashMap<>();
                                     userData.put("userId", userId);
                                     userData.put("nama", nama);
@@ -194,13 +191,13 @@ public class UserActivity extends FragmentActivity {
                                     userData.put("tinggiBadan", tb);
                                     userData.put("beratBadan", bb);
                                     userData.put("isBayi", isBayi);
+                                    userData.put("isAnak", isAnak);
                                     userData.put("profilUrl", profil_url);
 
                                     Map<String, Object> jenisAktifitasObj = new HashMap<>();
                                     jenisAktifitasObj.put("bobot", 1.2);
                                     jenisAktifitasObj.put("tingkatAktifitas", "Istirahat");
                                     jenisAktifitasObj.put("keterangan", "Istirahat di rumah");
-
                                     userData.put("aktifitas", jenisAktifitasObj);
 
                                     Map<String, Object> jenisStresObj = new HashMap<>();

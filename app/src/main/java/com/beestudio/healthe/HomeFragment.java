@@ -2,6 +2,7 @@ package com.beestudio.healthe;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beestudio.healthe.models.KebutuhanGiziUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
@@ -47,6 +52,10 @@ public class HomeFragment extends Fragment {
 
     KebutuhanGiziUser kebutuhanGiziUser;
     Button tambahData;
+
+    double protein;
+    double tee;
+    Map<String, Object> gizi;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,6 +88,7 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         kebutuhanGiziUser = new KebutuhanGiziUser();
+        gizi = new HashMap<>();
 
         namaHello = view.findViewById(R.id.nama_tv);
         kaloriCount = view.findViewById(R.id.kalori_count);
@@ -196,39 +206,63 @@ public class HomeFragment extends Fragment {
                     double bmr = kebutuhanGiziUser.hitungBMR(gender, tb, bb, bbi, usia, isBayi);
                     double bobotAktivitas = Double.valueOf(aktifitas.get("bobot").toString());
                     double bobotStres = Double.valueOf(stres.get("bobot").toString());
-                    double tee = kebutuhanGiziUser.hitungTEE(bobotAktivitas, bobotStres, bmr);
-                    kaloriCount.setText(new DecimalFormat("##.#").format(tee));
+                    tee = kebutuhanGiziUser.hitungTEE(bobotAktivitas, bobotStres, bmr);
+                    kaloriCount.setText(new DecimalFormat("#").format(tee));
 
-                    double protein = kebutuhanGiziUser.hitungProtein(tee);
-                    double lemak = kebutuhanGiziUser.hitungLemak(tee);
-                    double karbohidrat = kebutuhanGiziUser.hitungKarbohidrat(tee);
-                    proteinCount.setText(new DecimalFormat("##.#").format(protein));
-                    karbohidratCount.setText(new DecimalFormat("##.#").format(karbohidrat));
-                    lemakCount.setText(new DecimalFormat("##.#").format(lemak));
+                    db.collection("kandungan_kalori")
+                            .whereEqualTo("namaKandungan", "Protein")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
+                                        double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
+                                        double protein = kebutuhanGiziUser.hitungProtein(tee, kebutuhanHarian, bobotKandungan);
+                                        proteinCount.setText(new DecimalFormat("##.#").format(protein));
+                                        gizi.put("protein", protein);
+                                    }
+                                }
+                            });
 
-                    Map<String, Object> gizi = new HashMap<>();
+                    db.collection("kandungan_kalori")
+                            .whereEqualTo("namaKandungan", "Karbohidrat")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
+                                        double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
+                                        double karbohidrat = kebutuhanGiziUser.hitungKarbohidrat(tee, kebutuhanHarian, bobotKandungan);
+                                        karbohidratCount.setText(new DecimalFormat("##.#").format(karbohidrat));
+                                        gizi.put("karbohidrat", karbohidrat);
+                                    }
+                                }
+                            });
+
+                    db.collection("kandungan_kalori")
+                            .whereEqualTo("namaKandungan", "Lemak")
+                            .limit(1)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        double bobotKandungan = Double.valueOf(document.get("bobotKandungan").toString());
+                                        double kebutuhanHarian = Double.valueOf(document.get("kebutuhanHarian").toString());
+                                        double lemak = kebutuhanGiziUser.hitungLemak(tee, kebutuhanHarian, bobotKandungan);
+                                        lemakCount.setText(new DecimalFormat("##.#").format(lemak));
+                                        gizi.put("lemak", lemak);
+                                    }
+                                }
+                            });
+
                     gizi.put("beratBadanIdeal", bbi);
                     gizi.put("bmr", bmr);
                     gizi.put("totalGizi", tee);
-                    gizi.put("protein", protein);
-                    gizi.put("lemak", lemak);
-                    gizi.put("karbohidrat", karbohidrat);
 
                     db.collection("users").document(user.getUid())
                             .update("kebutuhanGizi", gizi);
-//
-////                    Menghitung BMI
-//                    String bmiKategoriResult = kelompokBMI(bb, tb);
-//                    String bmiStatusResult = statusBMI(bb, tb);
-//                    bmiKategori.setText(bmiKategoriResult);
-//                    if(bmiKategoriResult == "Kurus Tingkat 2" || bmiKategoriResult == "Kurus Tingkat 1") {
-//                        bmiKategori.setTextColor(getActivity().getResources().getColor(R.color.colorAccent));
-//                    } else  if(bmiKategoriResult == "Normal") {
-//                        bmiKategori.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
-//                    } else {
-//                        bmiKategori.setTextColor(getActivity().getResources().getColor(R.color.colorYellow));
-//                    }
-//                    bmiStatus.setText(bmiStatusResult);
                 } else {
                     Toast.makeText(getActivity(), "Data Kosong", Toast.LENGTH_SHORT).show();
                 }

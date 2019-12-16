@@ -28,7 +28,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,8 +36,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +65,7 @@ public class MakananAllFragment extends Fragment {
     FirebaseUser user;
 
     String jenisMakanan;
-    String idMakanan;
+    boolean isAnak, isBayi;
 
     public MakananAllFragment() {
         // Required empty public constructor
@@ -107,26 +104,61 @@ public class MakananAllFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             jenisMakanan= bundle.getString("jenisMakanan", "all");
-//            Toast.makeText(getActivity(), jenisMakanan, Toast.LENGTH_SHORT).show();
         }
 
-        getMakanan(jenisMakanan);
+        db.collection("users").document(user.getUid())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        isAnak = Boolean.valueOf(documentSnapshot.get("isAnak").toString());
+                        isBayi = Boolean.valueOf(documentSnapshot.get("isBayi").toString());
+                    }
+                });
+
+        getMakanan(jenisMakanan, isAnak, isBayi);
         return viewLayout;
     }
 
 
-    private void getMakanan(String jenisMakanan) {
+    private void getMakanan(String jenisMakanan, boolean isAnak, boolean isBayi) {
         Query query;
-        if(TextUtils.equals(jenisMakanan, "ringan")) {
-            query = db.collection("makanan").whereEqualTo("jenis", "Snack");;
-        } else if(TextUtils.equals(jenisMakanan, "berat")) {
-            query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat");;
-        } else if(TextUtils.equals(jenisMakanan, "minuman")) {
-            query = db.collection("makanan").whereEqualTo("jenis", "Minuman");;
-        } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
-            query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur");;
-        } else{
-            query= db.collection("makanan");
+
+        if(isBayi ) {
+            if(TextUtils.equals(jenisMakanan, "ringan")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Snack").whereEqualTo("forBayi", true);
+            } else if(TextUtils.equals(jenisMakanan, "berat")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat").whereEqualTo("forBayi", true);
+            } else if(TextUtils.equals(jenisMakanan, "minuman")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Minuman").whereEqualTo("forBayi", true);
+            } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur").whereEqualTo("forBayi", true);
+            } else{
+                query= db.collection("makanan").whereEqualTo("forBayi", true);
+            }
+        } else if(isAnak) {
+            if(TextUtils.equals(jenisMakanan, "ringan")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Snack").whereEqualTo("forAnak", true);
+            } else if(TextUtils.equals(jenisMakanan, "berat")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat").whereEqualTo("forAnak", true);
+            } else if(TextUtils.equals(jenisMakanan, "minuman")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Minuman").whereEqualTo("forAnak", true);
+            } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur").whereEqualTo("forAnak", true);
+            } else{
+                query= db.collection("makanan").whereEqualTo("forAnak", true);
+            }
+        } else {
+            if(TextUtils.equals(jenisMakanan, "ringan")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Snack").whereEqualTo("forBayi", false);
+            } else if(TextUtils.equals(jenisMakanan, "berat")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat").whereEqualTo("forBayi", false);
+            } else if(TextUtils.equals(jenisMakanan, "minuman")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Minuman").whereEqualTo("forBayi", false);
+            } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
+                query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur").whereEqualTo("forBayi", false);
+            } else{
+                query= db.collection("makanan");
+            }
         }
 
         FirestoreRecyclerOptions<MakananResponse> res = new FirestoreRecyclerOptions.Builder<MakananResponse>()
@@ -143,6 +175,7 @@ public class MakananAllFragment extends Fragment {
                 holder.makananKarbohidrat.setText(Double.toString(model.getJumlahKarbohidrat()));
                 holder.makananProtein.setText(Double.toString(model.getJumlahProtein()));
                 holder.makananLemak.setText(Double.toString(model.getJumlahLemak()));
+
                 Glide.with(getContext())
                         .load(model.getImageUrl())
                         .into(holder.makananImage);
@@ -152,29 +185,6 @@ public class MakananAllFragment extends Fragment {
                     i.setData(Uri.parse(model.getLinkUrl()));
                     startActivity(i);
                 });
-
-//                DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
-//                String docId = dSnap.getId();
-//
-//                db.collection("users").document(user.getUid())
-//                        .collection("makananDikonsumsi")
-//                        .whereEqualTo("makananId", docId)
-//                        .limit(1)
-//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                                if (!queryDocumentSnapshots.isEmpty()){
-//
-////                                    for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-////                                        idMakanan = doc.get("makananId").toString();
-////
-////                                        if(idMakanan)
-////                                    }
-//                                    holder.btnHitung.setBackgroundColor(getResources().getColor(R.color.colorYellow));
-//                                    holder.btnHitung.setText("- Dihitung");
-//                                }
-//                            }
-//                        });
 
                 holder.btnHitung.setOnClickListener(new View.OnClickListener() {
                     @Override

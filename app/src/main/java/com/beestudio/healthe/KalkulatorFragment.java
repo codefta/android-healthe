@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -69,6 +70,7 @@ public class KalkulatorFragment extends Fragment {
     String idMakanan;
     int jmlKalori;
     double jmlKarbo, jmlProtein, jmlLemak;
+
 
     public KalkulatorFragment() {
         // Required empty public constructor
@@ -203,6 +205,26 @@ public class KalkulatorFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(model.getLinkUrl()));
                     startActivity(i);
+                });
+
+                DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                String docId = dSnap.getId();
+
+                holder.btnHitung.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        db.collection("users").document(user.getUid())
+                                .collection("makananDikonsumsi").document(docId)
+                                .delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+                                            Toast.makeText(getActivity(), "Terhapus", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
                 });
             }
 

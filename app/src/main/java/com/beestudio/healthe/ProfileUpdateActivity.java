@@ -237,6 +237,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                     int tb = Integer.parseInt(tbEditText.getText().toString());
                                     int bb = Integer.parseInt(bbEditText.getText().toString());
                                     boolean isBayi = isBayi(tglLahir);
+                                    boolean isAnak = isAnak(tglLahir);
                                     String profil_url = uri.toString();
                                     Map<String, Object> userData= new HashMap<>();
                                     userData.put("userId", userId);
@@ -246,6 +247,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                     userData.put("tinggiBadan", tb);
                                     userData.put("beratBadan", bb);
                                     userData.put("isBayi", isBayi);
+                                    userData.put("isAnak", isAnak);
                                     userData.put("profilUrl", profil_url);
 
                                     db.collection("users").document(user.getUid())
@@ -331,6 +333,20 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         int usia = Months.monthsBetween(localDate,today).getMonths();
 
         if(usia >= 0 && usia <= 12) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isAnak(String birthday) {
+        DateTimeFormatter df = DateTimeFormat.forPattern("dd/MM/yyyy");
+        //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(birthday, df);
+        LocalDate today = LocalDate.now();
+        int usia = Years.yearsBetween(localDate,today).getYears();
+
+        if(usia > 1 && usia < 10) {
             return true;
         } else {
             return false;
