@@ -82,14 +82,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
         // Inflate the layout for this fragment
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
-
-        setProfileView();
-
-        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
-
 
         logout = view.findViewById(R.id.logout_layout);
         profileFoto = view.findViewById(R.id.profile_photo);
@@ -102,6 +98,7 @@ public class ProfileFragment extends Fragment {
         pengaturanAccount = view.findViewById(R.id.pengaturan_akun);
         infoApp = view.findViewById(R.id.informasi_aplikasi);
         satuanThn = view.findViewById(R.id.user_thn_tv);
+        setProfileView();
 
         pengaturanAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +153,7 @@ public class ProfileFragment extends Fragment {
                         ? "Local" : "Server";
 
                 if (snapshot != null && snapshot.exists()) {
-                    Glide.with(getActivity()).load(snapshot.get("profilUrl").toString()).centerCrop().into(profileFoto);
+                    Picasso.get().load(snapshot.get("profilUrl").toString()).into(profileFoto);
 
                     profileNama.setText(snapshot.get("nama").toString());
                     profileGender.setText(snapshot.get("jenisKelamin").toString());

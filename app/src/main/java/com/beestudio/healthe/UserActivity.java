@@ -59,9 +59,7 @@ public class UserActivity extends FragmentActivity {
     Uri filePathUri;
     RadioGroup gender;
     RadioButton genderSelected;
-
     ProgressDialog progressDialog;
-    DatePickerDialog datePicker;
     final Calendar myCalendar = Calendar.getInstance();
 
 
@@ -296,7 +294,6 @@ public class UserActivity extends FragmentActivity {
 
     private boolean isAnak(String birthday) {
         DateTimeFormatter df = DateTimeFormat.forPattern("dd/MM/yyyy");
-        //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(birthday, df);
         LocalDate today = LocalDate.now();
         int usia = Years.yearsBetween(localDate,today).getYears();
@@ -310,7 +307,6 @@ public class UserActivity extends FragmentActivity {
 
     private boolean isBayi(String birthday) {
         DateTimeFormatter df = DateTimeFormat.forPattern("dd/MM/yyyy");
-        //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(birthday, df);
         LocalDate today = LocalDate.now();
         int usia = Months.monthsBetween(localDate,today).getMonths();

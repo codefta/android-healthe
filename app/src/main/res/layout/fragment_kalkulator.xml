@@ -7,349 +7,357 @@
     android:background="#f4f4f4"
     tools:context=".KalkulatorFragment">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_bg_selector"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/nama_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:text="Android"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:background="@drawable/home_bg_selector"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:textColor="@color/colorWhite"
-                android:text="Kamu telah mengonsumsi kalori sebesar ..."
-                android:textSize="18sp"
-                android:textStyle="italic" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/nama_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="Android"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="1.4">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:textColor="@color/colorWhite"
+                    android:text="Kamu telah mengonsumsi kalori sebesar ..."
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
 
-                        <ProgressBar
-                            android:id="@+id/kalori_progress"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:background="@drawable/kalori_shape"
-                            android:indeterminate="false"
-                            android:max="0"
-                            android:progress="0"
-                            android:progressDrawable="@drawable/kalori_progress_bar" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/kalori_progress"
-                            android:layout_alignTop="@+id/kalori_progress"
-                            android:layout_alignRight="@+id/kalori_progress"
-                            android:layout_alignBottom="@+id/kalori_progress"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/kalori_progress_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:id="@+id/kalori_progress_slash"
-
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/kalori_progress_count"
-                                    android:text="/"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:id="@+id/kalori_progress_total"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/kalori_progress_slash"
-                                    android:text="1000"
-                                    android:textSize="18sp" />
-
-                            </RelativeLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/kalori_progress_slash"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/kalori_progress_count"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="kkal"
-                                android:textSize="18sp" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="16dp">
-
-                            <TextView
-                                android:id="@+id/karbohidrat_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="Karbohidrat" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/karbohidrat_tv"
-                                android:gravity="end"
-                                android:textAlignment="textEnd">
-
-                                <TextView
-                                    android:id="@+id/karbohidrat_progress_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textColor="@color/colorBlack" />
-
-                                <TextView
-                                    android:id="@+id/karbohidrat_progress_slash"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/karbohidrat_progress_count"
-                                    android:text=" / " />
-
-                                <TextView
-                                    android:id="@+id/karbohidrat_progress_total"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/karbohidrat_progress_slash"
-                                    android:text="0" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/karbohidrat_progress_total"
-                                    android:text="gr" />
-
-                            </RelativeLayout>
-
-                            <ProgressBar
-                                android:id="@+id/karbohidrat_progress_bar"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/karbohidrat_tv"
-                                android:indeterminate="false"
-                                android:max="0"
-                                android:progress="0"
-                                android:progressTint="@color/colorGreen" />
-                        </RelativeLayout>
+                        android:orientation="horizontal">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_marginRight="16dp">
-
-                            <TextView
-                                android:id="@+id/protein_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="Protein" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/protein_tv"
-                                android:gravity="end"
-                                android:textAlignment="textEnd">
-
-                                <TextView
-                                    android:id="@+id/protein_progress_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textColor="@color/colorBlack" />
-
-                                <TextView
-                                    android:id="@+id/protein_progress_slash"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/protein_progress_count"
-                                    android:text=" / " />
-
-                                <TextView
-                                    android:id="@+id/protein_progress_total"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/protein_progress_slash"
-                                    android:text="0" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/protein_progress_total"
-                                    android:text="gr" />
-
-                            </RelativeLayout>
+                            android:layout_weight="1.4">
 
                             <ProgressBar
-                                android:id="@+id/protein_progress_bar"
+                                android:id="@+id/kalori_progress"
                                 style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/protein_tv"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:background="@drawable/kalori_shape"
                                 android:indeterminate="false"
                                 android:max="0"
                                 android:progress="0"
-                                android:progressTint="@color/colorBlue" />
+                                android:progressDrawable="@drawable/kalori_progress_bar" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/kalori_progress"
+                                android:layout_alignTop="@+id/kalori_progress"
+                                android:layout_alignRight="@+id/kalori_progress"
+                                android:layout_alignBottom="@+id/kalori_progress"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:id="@+id/kalori_progress_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/kalori_progress_slash"
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/kalori_progress_count"
+                                        android:text="/"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/kalori_progress_total"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/kalori_progress_slash"
+                                        android:text="1000"
+                                        android:textSize="18sp" />
+
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/kalori_progress_slash"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@id/kalori_progress_count"
+                                    android:fontFamily="@font/quicksand_medium"
+                                    android:text="kkal"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
                         </RelativeLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginRight="16dp">
-
-                            <TextView
-                                android:id="@+id/Lemak_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/quicksand_medium"
-                                android:text="Lemak" />
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/Lemak_tv"
-                                android:gravity="end"
-                                android:textAlignment="textEnd">
+                                android:layout_marginRight="16dp">
 
                                 <TextView
-                                    android:id="@+id/lemak_progress_count"
+                                    android:id="@+id/karbohidrat_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textColor="@color/colorBlack" />
+                                    android:fontFamily="@font/quicksand_medium"
+                                    android:text="Karbohidrat" />
 
-                                <TextView
-                                    android:id="@+id/lemak_progress_slash"
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/lemak_progress_count"
-                                    android:text=" / " />
+                                    android:layout_toRightOf="@id/karbohidrat_tv"
+                                    android:gravity="end"
+                                    android:textAlignment="textEnd">
 
-                                <TextView
-                                    android:id="@+id/lemak_progress_total"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:id="@+id/karbohidrat_progress_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0"
+                                        android:textColor="@color/colorBlack" />
+
+                                    <TextView
+                                        android:id="@+id/karbohidrat_progress_slash"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/karbohidrat_progress_count"
+                                        android:text=" / " />
+
+                                    <TextView
+                                        android:id="@+id/karbohidrat_progress_total"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/karbohidrat_progress_slash"
+                                        android:text="0" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/karbohidrat_progress_total"
+                                        android:text="gr" />
+
+                                </RelativeLayout>
+
+                                <ProgressBar
+                                    android:id="@+id/karbohidrat_progress_bar"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/lemak_progress_slash"
-                                    android:text="0" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/lemak_progress_total"
-                                    android:text="gr" />
-
+                                    android:layout_below="@id/karbohidrat_tv"
+                                    android:indeterminate="false"
+                                    android:max="0"
+                                    android:progress="0"
+                                    android:progressTint="@color/colorGreen" />
                             </RelativeLayout>
 
-                            <ProgressBar
-                                android:id="@+id/lemak_progress_bar"
-                                style="?android:attr/progressBarStyleHorizontal"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/Lemak_tv"
-                                android:indeterminate="false"
-                                android:max="0"
-                                android:progress="0"
-                                android:progressTint="@color/colorYellow" />
-                        </RelativeLayout>
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="16dp">
+
+                                <TextView
+                                    android:id="@+id/protein_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/quicksand_medium"
+                                    android:text="Protein" />
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/protein_tv"
+                                    android:gravity="end"
+                                    android:textAlignment="textEnd">
+
+                                    <TextView
+                                        android:id="@+id/protein_progress_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0"
+                                        android:textColor="@color/colorBlack" />
+
+                                    <TextView
+                                        android:id="@+id/protein_progress_slash"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/protein_progress_count"
+                                        android:text=" / " />
+
+                                    <TextView
+                                        android:id="@+id/protein_progress_total"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/protein_progress_slash"
+                                        android:text="0" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/protein_progress_total"
+                                        android:text="gr" />
+
+                                </RelativeLayout>
+
+                                <ProgressBar
+                                    android:id="@+id/protein_progress_bar"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/protein_tv"
+                                    android:indeterminate="false"
+                                    android:max="0"
+                                    android:progress="0"
+                                    android:progressTint="@color/colorBlue" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="16dp">
+
+                                <TextView
+                                    android:id="@+id/Lemak_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/quicksand_medium"
+                                    android:text="Lemak" />
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/Lemak_tv"
+                                    android:gravity="end"
+                                    android:textAlignment="textEnd">
+
+                                    <TextView
+                                        android:id="@+id/lemak_progress_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0"
+                                        android:textColor="@color/colorBlack" />
+
+                                    <TextView
+                                        android:id="@+id/lemak_progress_slash"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/lemak_progress_count"
+                                        android:text=" / " />
+
+                                    <TextView
+                                        android:id="@+id/lemak_progress_total"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/lemak_progress_slash"
+                                        android:text="0" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/lemak_progress_total"
+                                        android:text="gr" />
+
+                                </RelativeLayout>
+
+                                <ProgressBar
+                                    android:id="@+id/lemak_progress_bar"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/Lemak_tv"
+                                    android:indeterminate="false"
+                                    android:max="0"
+                                    android:progress="0"
+                                    android:progressTint="@color/colorYellow" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
 
+                </androidx.cardview.widget.CardView>
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Status : "
-                        android:fontFamily="@font/quicksand_medium"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="20sp" />
-                    <TextView
-                        android:id="@+id/status_asupan"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:textSize="18sp"
-                        android:text="Belum ada Status"
-                        android:layout_marginStart="8dp" />
+                        android:layout_margin="12dp"
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Status : "
+                            android:fontFamily="@font/quicksand_medium"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/status_asupan"
+                            android:layout_marginLeft="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_medium"
+                            android:textSize="18sp"
+                            android:text="Belum ada Status"
+                            android:layout_marginStart="8dp" />
 
-            </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-        </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+
+
 
         <TextView
             android:layout_width="match_parent"
@@ -372,8 +380,6 @@
 
         <ScrollView
             android:scrollbars="none"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

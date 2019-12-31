@@ -113,7 +113,6 @@ public class MakananFragment extends Fragment  {
                 buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
 
                 makananMessage.putString("jenisMakanan", "all");
-                Toast.makeText(getActivity(), "Daftar Semua Makanan", Toast.LENGTH_LONG).show();
                 openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
             }
         });
@@ -127,8 +126,6 @@ public class MakananFragment extends Fragment  {
                 minuman.setBackground(getResources().getDrawable(R.color.colorAccentBg));
                 buahSayur.setBackground(getResources().getDrawable(R.color.colorAccentBg));
                 makananMessage.putString("jenisMakanan", "ringan");
-
-                Toast.makeText(getActivity(), "Daftar Makanan Ringan", Toast.LENGTH_LONG).show();
                 openFragment(MakananAllFragment.newInstance("", ""), makananMessage);
             }
         });

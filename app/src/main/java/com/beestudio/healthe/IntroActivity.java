@@ -37,10 +37,10 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
         mAuth = FirebaseAuth.getInstance();
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layout_dots);
-        btnToLogin = (Button) findViewById(R.id.btn_to_login);
-        btnToRegister = (Button) findViewById(R.id.btn_to_register);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layout_dots);
+        btnToLogin = findViewById(R.id.btn_to_login);
+        btnToRegister = findViewById(R.id.btn_to_register);
 
         layouts = new int[] {
                 R.layout.intro_one,
@@ -87,11 +87,8 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
-            // Otherwise, select the previous step.
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }

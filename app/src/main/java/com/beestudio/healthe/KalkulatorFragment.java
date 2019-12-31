@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,9 +71,13 @@ public class KalkulatorFragment extends Fragment {
     TextView makananEmpty, statusAsupan;
 
     KalkulatorMakanan km;
-    double jmlKarbo, jmlProtein, jmlLemak, jmlKalori;
+
+    int progressStatus = 0;
+    Handler handler;
+    static int progress;
 
     Map<String, Object> recalHarian;
+    Boolean successUpdateDb;
 
 
     public KalkulatorFragment() {
@@ -122,17 +127,43 @@ public class KalkulatorFragment extends Fragment {
         statusAsupan = view.findViewById(R.id.status_asupan);
 
         km = new KalkulatorMakanan();
+        handler = new Handler();
+        progress = 0;
 
         makananList.setLayoutManager(new LinearLayoutManager(getContext()));
         ButterKnife.bind(getActivity());
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        jmlKalori = 0;
         getMakanan();
         hitProgres();
-        setStatus();
+        setProgresBar();
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressStatus < 200) {
+                    progressStatus = doSomeWork();
+                    handler.post(new Runnable() {
+                        public void run() {
+                            hitProgres();
+                            setProgresBar();
+                        }
+                    });
+                }
+            }
+
+            private int doSomeWork() {
+                try {
+                    // ---simulate doing some work---
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return ++progress;
+            }
+        }).start();
+
         return view;
     }
+
 
     private void hitProgres() {
         db.collection("users").document(user.getUid())
@@ -141,38 +172,53 @@ public class KalkulatorFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         recalHarian = new HashMap<>();
+                        double jmlKalori = 0;
+                        double jmlLemak = 0;
+                        double jmlProtein = 0;
+                        double jmlKarbo = 0;
                         for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             jmlKalori += Double.valueOf(doc.get("jumlahKalori").toString());
-                            kaloriProg.setProgress((int)jmlKalori);
                             jmlLemak += Double.valueOf(doc.get("jumlahLemak").toString());
-                            lemakProg.setProgress((int)jmlLemak);
                             jmlProtein += Double.valueOf(doc.get("jumlahProtein").toString());
-                            proteinProg.setProgress((int)jmlProtein);
                             jmlKarbo += Double.valueOf(doc.get("jumlahKarbohidrat").toString());
-                            karboProg.setProgress((int) jmlKarbo);
-                            kaloriCount.setText(new DecimalFormat("#").format(jmlKalori));
-                            karboCount.setText(new DecimalFormat("#.#").format(jmlKarbo));
-                            lemakCount.setText(new DecimalFormat("#.#").format(jmlLemak));
-                            proteinCount.setText(new DecimalFormat("#.#").format(jmlProtein));
-
-                            recalHarian.put("jmlKaloriTerpenuhi", jmlKalori);
-                            recalHarian.put("jmlLemakTerpenuhi", jmlLemak);
-                            recalHarian.put("jmlProteinTerpenuhi", jmlProtein);
-                            recalHarian.put("jmlKarbohidratTerpenuhi", jmlKarbo);
                         }
 
+                        kaloriCount.setText(new DecimalFormat("#").format(jmlKalori));
+                        karboCount.setText(new DecimalFormat("#.#").format(jmlKarbo));
+                        lemakCount.setText(new DecimalFormat("#.#").format(jmlLemak));
+                        proteinCount.setText(new DecimalFormat("#.#").format(jmlProtein));
+
+                        kaloriProg.setProgress((int)jmlKalori);
+                        proteinProg.setProgress((int)jmlProtein);
+                        lemakProg.setProgress((int)jmlLemak);
+                        karboProg.setProgress((int) jmlKarbo);
+                        recalHarian.put("jmlKaloriTerpenuhi", jmlKalori);
+                        recalHarian.put("jmlLemakTerpenuhi", jmlLemak);
+                        recalHarian.put("jmlProteinTerpenuhi", jmlProtein);
+                        recalHarian.put("jmlKarbohidratTerpenuhi", jmlKarbo);
+
                         db.collection("users").document(user.getUid())
-                                .update("kaloriTerpenuhi", recalHarian);
+                                .update("kaloriTerpenuhi", recalHarian)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            setStatus();
+                                        }
+                                    }
+                                });
+
                     }
                 });
+    }
 
+    public void setProgresBar() {
         db.collection("users").document(user.getUid())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         if(documentSnapshot.exists()) {
                             Map kebutuhanGizi = (Map) documentSnapshot.getData().get("kebutuhanGizi");
-
                             double jmlKalori = Double.valueOf(kebutuhanGizi.get("totalGizi").toString());
                             kaloriProg.setMax((int) jmlKalori);
                             kaloriTotal.setText(new DecimalFormat("#").format(jmlKalori));
@@ -254,10 +300,19 @@ public class KalkulatorFragment extends Fragment {
                         .load(model.getImageUrl())
                         .into(holder.makananImage);
 
-                holder.itemView.setOnClickListener(v -> {
+                holder.makananTitle.setOnClickListener(v -> {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(model.getLinkUrl()));
                     startActivity(i);
+                });
+
+                holder.makananImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(model.getImageUrl()));
+                        startActivity(i);
+                    }
                 });
 
                 DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
@@ -274,6 +329,8 @@ public class KalkulatorFragment extends Fragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()) {
                                             Toast.makeText(getActivity(), "Terhapus", Toast.LENGTH_SHORT).show();
+                                            hitProgres();
+                                            setProgresBar();
                                         }
                                     }
                                 });

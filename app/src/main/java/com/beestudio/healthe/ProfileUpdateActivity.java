@@ -61,20 +61,19 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore db;
     StorageReference storageReference;
-    private Button btnSubmit;
+
     String storagePath = "profile_image/";
     int imageRequestCode = 7;
     Boolean processSubmit = false;
+
+    Button btnSubmit;
     ImageView profileFoto;
     CircleImageView chooseImage;
-    Button chooseButton;
     EditText namaEditText, tglLahirEditText, tbEditText, bbEditText;
     Uri filePathUri;
     RadioGroup gender;
     RadioButton genderSelected;
-
     ProgressDialog progressDialog;
-    DatePickerDialog datePicker;
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -176,7 +175,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                 ? "Local" : "Server";
 
                         if (snapshot != null && snapshot.exists()) {
-                            Glide.with(ProfileUpdateActivity.this).load(snapshot.get("profilUrl").toString()).centerCrop().into(profileFoto);
+                            Glide.with(getApplicationContext()).load(snapshot.get("profilUrl").toString()).centerCrop().into(profileFoto);
                             if(TextUtils.equals(snapshot.get("jenisKelamin").toString(),"Laki-laki")) {
                                 gender.check(R.id.gender_pria);
                             } else {
@@ -289,7 +288,6 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(ProfileUpdateActivity.this, gender, Toast.LENGTH_SHORT).show();
             String userId = user.getUid();
             String nama = namaEditText.getText().toString();
             String jenisKelamin = gender;

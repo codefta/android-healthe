@@ -3,6 +3,7 @@ package com.beestudio.healthe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,23 +17,19 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailField;
     EditText passwordField;
-    TextInputLayout emailLayout;
-    TextInputLayout passwordLayout;
 
     Button buttonLogin, btnExit;
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
-    private FirebaseUser userLogin;
-
-
-    public static final String PREF_USER_FIRST_TIME = "user_first_time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            Intent intent = new Intent(LoginActivity.this, UserActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
@@ -89,15 +86,37 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            userLogin = mAuth.getCurrentUser();
                             progressDialog.hide();
-                            Intent intent = new Intent(LoginActivity.this, UserActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "Login Activity", Toast.LENGTH_SHORT).show();
                         } else {
-                            userLogin = null;
                             progressDialog.hide();
-                            Toast.makeText(LoginActivity.this, "Login gagal", Toast.LENGTH_SHORT).show();
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                // show error toast ot user ,user already exist
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setTitle("Login Gagal");
+                                builder.setMessage("Login Anda gagal, Akun sudah terdaftar.");
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            } catch (FirebaseNetworkException e) {
+                                //show error tost network exception
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setTitle("Login Gagal");
+                                builder.setMessage("Tidak ada internet.");
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            } catch (Exception e) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setTitle("Login Gagal");
+                                builder.setMessage(e.getMessage());
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
                         }
 
                     }
@@ -116,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         String password = passwordField.getText().toString();
-        if(TextUtils.isEmpty(email)) {
+        if(TextUtils.isEmpty(password)) {
             passwordField.setError("Silakan Masukan Password");
             valid = false;
         } else {

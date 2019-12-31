@@ -149,13 +149,13 @@ public class MakananAllFragment extends Fragment {
             }
         } else {
             if(TextUtils.equals(jenisMakanan, "ringan")) {
-                query = db.collection("makanan").whereEqualTo("jenis", "Snack").whereEqualTo("forBayi", false);
+                query = db.collection("makanan").whereEqualTo("jenis", "Snack");
             } else if(TextUtils.equals(jenisMakanan, "berat")) {
-                query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat").whereEqualTo("forBayi", false);
+                query = db.collection("makanan").whereEqualTo("jenis", "Makanan Berat");
             } else if(TextUtils.equals(jenisMakanan, "minuman")) {
                 query = db.collection("makanan").whereEqualTo("jenis", "Minuman").whereEqualTo("forBayi", false);
             } else if(TextUtils.equals(jenisMakanan, "buahSayur")) {
-                query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur").whereEqualTo("forBayi", false);
+                query = db.collection("makanan").whereEqualTo("jenis", "Buah dan Sayur");
             } else{
                 query= db.collection("makanan");
             }
@@ -180,10 +180,19 @@ public class MakananAllFragment extends Fragment {
                         .load(model.getImageUrl())
                         .into(holder.makananImage);
 
-                holder.itemView.setOnClickListener(v -> {
+                holder.makananTitle.setOnClickListener(v -> {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(model.getLinkUrl()));
                     startActivity(i);
+                });
+
+                holder.makananImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(model.getImageUrl()));
+                        startActivity(i);
+                    }
                 });
 
                 holder.btnHitung.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +200,6 @@ public class MakananAllFragment extends Fragment {
                     public void onClick(View v) {
                         DocumentSnapshot dSnap = getSnapshots().getSnapshot(holder.getAdapterPosition());
                         String docId = dSnap.getId();
-                        Toast.makeText(getActivity(), "Test Button Hitung", Toast.LENGTH_LONG).show();
                         Map<String, Object> objMakanan = new HashMap<>();
                         objMakanan.put("nama", model.getNama());
                         objMakanan.put("jenis", model.getJenis());
@@ -212,6 +220,7 @@ public class MakananAllFragment extends Fragment {
                                         if(task.isSuccessful()) {
                                             holder.btnHitung.setBackgroundColor(getResources().getColor(R.color.colorYellow));
                                             holder.btnHitung.setText("Dihitung");
+                                            Toast.makeText(getActivity(), "Berhasil menambahkan makanan ke kalkulator", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

@@ -30,16 +30,17 @@
             android:fontFamily="@font/quicksand_medium"
             android:textSize="18sp"
             android:text="Makanan Title" />
+
         <Button
             android:layout_alignParentTop="true"
             android:id="@+id/btn_hitung_kal_makanan"
             android:layout_alignParentRight="true"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:textSize="10dp"
             android:background="@color/colorGreen"
             android:textColor="@color/colorWhite"
             android:padding="0dp"
-            android:layout_height="24dp"
+            android:layout_height="30dp"
             android:text="+ Hitung" />
 
         <TextView

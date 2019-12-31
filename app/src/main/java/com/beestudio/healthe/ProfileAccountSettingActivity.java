@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,7 +20,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
@@ -106,7 +109,32 @@ public class ProfileAccountSettingActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ProfileAccountSettingActivity.this, "Email Telah diubah", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(ProfileAccountSettingActivity.this, "Email gagal diubah", Toast.LENGTH_LONG).show();
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    // show error toast ot user ,user already exist
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage("Login Anda gagal, Akun sudah terdaftar.");
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                } catch (FirebaseNetworkException e) {
+                                    //show error tost network exception
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage("Tidak ada internet.");
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                } catch (Exception e) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage(e.getMessage());
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
                             }
                         }
                     });
@@ -121,7 +149,32 @@ public class ProfileAccountSettingActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ProfileAccountSettingActivity.this, "Password Telah diubah", Toast.LENGTH_LONG).show();
                             }else {
-                                Toast.makeText(ProfileAccountSettingActivity.this, "Password gagal diubah", Toast.LENGTH_LONG).show();
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    // show error toast ot user ,user already exist
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage("Login Anda gagal, Akun sudah terdaftar.");
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                } catch (FirebaseNetworkException e) {
+                                    //show error tost network exception
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage("Tidak ada internet.");
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                } catch (Exception e) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAccountSettingActivity.this);
+                                    builder.setTitle("Login Gagal");
+                                    builder.setMessage(e.getMessage());
+                                    builder.setPositiveButton("OK", null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
                             }
 
                         }

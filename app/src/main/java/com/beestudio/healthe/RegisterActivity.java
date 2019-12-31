@@ -1,31 +1,31 @@
 package com.beestudio.healthe;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 
 public class RegisterActivity extends AppCompatActivity{
-
 
     private Button btnDaftar, btnExit;
     private EditText emailField, passwordField, passwordAgainField;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
-    private FirebaseUser userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +71,39 @@ public class RegisterActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userSession = mAuth.getCurrentUser();
-                            Toast.makeText(RegisterActivity.this, "Register Berhasil", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, UserActivity.class);
                             startActivity(intent);
+                            progressDialog.hide();
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();
-                            userSession = null;
+                            progressDialog.hide();
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                // show error toast ot user ,user already exist
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setTitle("Pendaftaran Gagal");
+                                builder.setMessage("Pendaftaran Anda gagal, Akun sudah terdaftar.");
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            } catch (FirebaseNetworkException e) {
+                                //show error tost network exception
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setTitle("Pendaftaran Gagal");
+                                builder.setMessage("Tidak ada internet.");
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            } catch (Exception e) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setTitle("Pendaftaran Gagal");
+                                builder.setMessage(e.getMessage());
+                                builder.setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
                         }
 
-                        progressDialog.hide();
                     }
                 });
 
@@ -121,11 +144,5 @@ public class RegisterActivity extends AppCompatActivity{
         }
 
         return  valid;
-    }
-
-    private void hideProgressDialog() {
-        if(progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 }
